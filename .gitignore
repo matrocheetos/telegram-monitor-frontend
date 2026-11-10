@@ -1,0 +1,12 @@
+.agents/
+AGENTS.md
+TASKS.md
+
+node_modules/
+dist/
+.wrangler/
+.cloudflare/
+*.local
+.env
+.env.*
+!.env.example
