@@ -1,13 +1,23 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { authQueries } from '../lib/api/queries'
 
 export const Route = createFileRoute('/')({
-  component: IndexComponent,
-})
+  beforeLoad: async ({ context }) => {
+    const session = await context.queryClient.ensureQueryData(authQueries.session())
 
-function IndexComponent() {
-  return (
-    <main className="flex min-h-screen items-center justify-center">
-      <h1 className="text-2xl font-bold">Telegram Monitor</h1>
-    </main>
-  )
-}
+    if (session.needsInitialSetup) {
+      throw redirect({ to: '/setup' })
+    }
+
+    if (!session.authenticated) {
+      throw redirect({ to: '/login' })
+    }
+
+    if (session.user?.role === 'admin' && !session.telegram?.connected) {
+      throw redirect({ to: '/admin/telegram' })
+    }
+
+    throw redirect({ to: '/dashboard' })
+  },
+  component: () => null,
+})

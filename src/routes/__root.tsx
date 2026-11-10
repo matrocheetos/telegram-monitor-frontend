@@ -1,13 +1,21 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
+import type { QueryClient } from '@tanstack/react-query'
+import { I18nProvider } from '../lib/i18n'
 
-export const Route = createRootRoute({
+export interface RouterContext {
+  queryClient: QueryClient
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
 })
 
 function RootComponent() {
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100">
-      <Outlet />
-    </div>
+    <I18nProvider>
+      <div className="min-h-screen bg-slate-900 text-slate-100 font-sans antialiased">
+        <Outlet />
+      </div>
+    </I18nProvider>
   )
 }

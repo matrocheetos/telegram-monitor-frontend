@@ -1,0 +1,182 @@
+export type SupportedLocale = 'pt-BR' | 'en-US'
+
+export interface I18nDictionary {
+  common: {
+    appName: string
+    initialSetupBrand: string
+    userControlCenter: string
+    adminControlCenter: string
+    connectedAs: string
+    roleUser: string
+    roleAdmin: string
+    logout: string
+    copied: string
+    copyUrl: string
+    copyCoupon: string
+    remove: string
+    save: string
+    saveChanges: string
+    cancel: string
+    action: string
+    actionsAdmin: string
+    date: string
+    store: string
+    channel: string
+    channelTelegramGroup: string
+    chatIdUsername: string
+    active: string
+    inactive: string
+    administrator: string
+    user: string
+    badgeAdmin: string
+    badgeUser: string
+    protected: string
+  }
+  setup: {
+    title: string
+    username: string
+    usernamePlaceholder: string
+    password: string
+    confirmPassword: string
+    submit: string
+    passwordMismatch: string
+    usernameRequired: string
+    passwordMinLength: string
+  }
+  login: {
+    title: string
+    username: string
+    password: string
+    submit: string
+    invalidCredentials: string
+  }
+  nav: {
+    telegramConnection: string
+    monitoredChannels: string
+    userManagement: string
+    myInterests: string
+    offersFound: string
+  }
+  dashboard: {
+    title: string
+    notificationChannel: string
+    couponsChannel: string
+    addInterestTitle: string
+    termPlaceholder: string
+    maxPricePlaceholder: string
+    addInterestButton: string
+    monitoredTermsTitle: (count: number) => string
+    termHeader: string
+    rulesHeader: string
+    targetPriceHeader: string
+    lastAlertHeader: string
+    actionHeader: string
+    noLimit: string
+    upTo: (price: string) => string
+    freeTokensSynonyms: string
+    freeTokensExclusion: string
+    freeTokensAccentCase: string
+    freeTokensFuzzy: string
+  }
+  telegram: {
+    title: string
+    activeSession: string
+    inactiveSession: string
+    connectedAccount: (masked: string) => string
+    noAccountConnected: string
+    pendingAuth: string
+    syncedChannels: (count: number) => string
+    selectChannels: string
+    disconnect: string
+    disconnectConfirm: string
+    step1: string
+    step1Title: string
+    apiId: string
+    apiIdPlaceholder: string
+    apiHash: string
+    apiHashPlaceholder: string
+    phone: string
+    phonePlaceholder: string
+    sendOtp: string
+    step2: string
+    step2Title: string
+    code: string
+    codeDisabledPlaceholder: string
+    twoFactor: string
+    twoFactorOptional: string
+    securityNoticeTitle: string
+    securityNoticeDesc: string
+    connectAccount: string
+  }
+  channels: {
+    title: string
+    kpiAccount: string
+    kpiCoupons: string
+    kpiCouponsDesc: (count: number) => string
+    kpiProducts: string
+    kpiProductsDesc: (count: number) => string
+    searchPlaceholder: string
+    syncButton: string
+    saveButton: string
+    colProducts: string
+    colCoupons: string
+    monitorProducts: string
+    ignoreProducts: string
+    monitorCoupons: string
+    ignoreCoupons: string
+  }
+  users: {
+    title: string
+    registerTitle: string
+    username: string
+    usernamePlaceholder: string
+    initialPassword: string
+    role: string
+    createUser: string
+    registeredUsersTitle: (count: number) => string
+    colUser: string
+    colRole: string
+    colPublicChannel: string
+    colActiveTerms: string
+    termsActiveCount: (count: number) => string
+    resetPassword: string
+    deleteUser: string
+    deleteUserConfirm: (username: string) => string
+  }
+  offers: {
+    title: string
+    tabProducts: (count: number) => string
+    tabCoupons: (count: number) => string
+    searchPlaceholder: string
+    productsTitle: string
+    couponsTitle: string
+    colOffer: string
+    colTerm: string
+    colPrice: string
+    colCouponCode: string
+    colRuleMessage: string
+    openLink: string
+  }
+  emptyState: {
+    interests: string
+    channels: string
+    products: string
+    coupons: string
+    interestsTitle: string
+    channelsTitle: string
+    productsTitle: string
+    couponsTitle: string
+    colProductsShort: string
+    colCouponsShort: string
+  }
+  apiErrors: {
+    networkError: string
+    badGateway: string
+    unauthorized: string
+    forbidden: string
+    notFound: string
+    conflict: string
+    unprocessable: string
+    genericError: string
+  }
+}
