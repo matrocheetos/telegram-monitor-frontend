@@ -14,14 +14,6 @@ export const Route = createFileRoute('/_authenticated')({
       throw redirect({ to: '/login' })
     }
 
-    if (
-      session.user?.role === 'admin' &&
-      !session.telegram?.connected &&
-      location.pathname !== '/admin/telegram'
-    ) {
-      throw redirect({ to: '/admin/telegram' })
-    }
-
     return { session }
   },
   component: AuthenticatedLayout,

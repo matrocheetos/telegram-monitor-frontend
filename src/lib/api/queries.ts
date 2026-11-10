@@ -24,7 +24,8 @@ export function useLoginMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: LoginRequest) => apiClient.login(data),
-    onSuccess: () => {
+    onSuccess: (session) => {
+      queryClient.setQueryData(['auth', 'session'], session)
       queryClient.invalidateQueries({ queryKey: ['auth', 'session'] })
     },
   })
@@ -44,7 +45,8 @@ export function useSetupMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: SetupRequest) => apiClient.setup(data),
-    onSuccess: () => {
+    onSuccess: (session) => {
+      queryClient.setQueryData(['auth', 'session'], session)
       queryClient.invalidateQueries({ queryKey: ['auth', 'session'] })
     },
   })

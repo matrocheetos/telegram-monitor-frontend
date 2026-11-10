@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { createFileRoute, redirect, useRouter } from '@tanstack/react-router'
+import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { authQueries, useLoginMutation } from '../lib/api/queries'
 import { AuthTopBar } from '../components/layout/AuthTopBar'
 import { useI18n } from '../lib/i18n'
@@ -26,7 +26,7 @@ export const Route = createFileRoute('/login')({
 
 function LoginPage() {
   const { t } = useI18n()
-  const router = useRouter()
+  const navigate = useNavigate()
   const loginMutation = useLoginMutation()
 
   const [username, setUsername] = useState('')
@@ -40,9 +40,9 @@ function LoginPage() {
       {
         onSuccess: (session) => {
           if (session.user?.role === 'admin' && !session.telegram?.connected) {
-            router.navigate({ to: '/admin/telegram' })
+            navigate({ to: '/admin/telegram' })
           } else {
-            router.navigate({ to: '/dashboard' })
+            navigate({ to: '/dashboard' })
           }
         },
       },

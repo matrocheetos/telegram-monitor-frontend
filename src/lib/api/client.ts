@@ -61,7 +61,12 @@ interface RequestOptions extends RequestInit {
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { params, headers: customHeaders, ...init } = options
 
-  let url = path
+  const apiBase =
+    typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_URL
+      ? String(import.meta.env.VITE_API_URL).replace(/\/+$/, '')
+      : ''
+
+  let url = `${apiBase}${path}`
   if (params) {
     const query = new URLSearchParams()
     for (const [key, value] of Object.entries(params)) {
