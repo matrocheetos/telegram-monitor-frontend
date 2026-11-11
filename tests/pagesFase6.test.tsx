@@ -157,8 +157,8 @@ describe('Fase 6: Admin Exclusive Pages (Boards 4, 4b, 5, 6)', () => {
       expect(screen.getByText('Autenticação Pendente')).toBeInTheDocument()
 
       // Step 1: Fill inputs
-      const apiIdInput = screen.getByPlaceholderText('Ex: 12345678')
-      const apiHashInput = screen.getByPlaceholderText('Ex: 0123456789abcdef0123456789abcdef')
+      const apiIdInput = screen.getByPlaceholderText('Ex: 12345678…')
+      const apiHashInput = screen.getByPlaceholderText('Ex: 0123456789abcdef0123456789abcdef…')
       const phoneInput = screen.getByPlaceholderText('+55 11 99999-9999')
       const sendOtpBtn = screen.getByRole('button', { name: 'Enviar Código de Verificação (OTP)' })
 
@@ -386,7 +386,7 @@ describe('Fase 6: Admin Exclusive Pages (Boards 4, 4b, 5, 6)', () => {
       await screen.findByText('Promos Brasil VIP')
       expect(screen.getByText('Achados e Cupons BR')).toBeInTheDocument()
 
-      const searchInput = screen.getByPlaceholderText('Título, @username ou Chat ID')
+      const searchInput = screen.getByPlaceholderText('Filtrar canais por nome ou @username…')
       fireEvent.change(searchInput, { target: { value: 'Tech' } })
 
       expect(screen.queryByText('Promos Brasil VIP')).not.toBeInTheDocument()

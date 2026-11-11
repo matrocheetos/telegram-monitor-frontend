@@ -98,7 +98,7 @@ function OffersPage() {
             role="tab"
             aria-selected={activeTab === 'products'}
             onClick={() => handleTabChange('products')}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer select-none ${
+            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer select-none tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
               activeTab === 'products'
                 ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
@@ -111,7 +111,7 @@ function OffersPage() {
             role="tab"
             aria-selected={activeTab === 'coupons'}
             onClick={() => handleTabChange('coupons')}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer select-none ${
+            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer select-none tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
               activeTab === 'coupons'
                 ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
@@ -125,11 +125,15 @@ function OffersPage() {
         <form onSubmit={handleSearchSubmit} className="flex-1 md:max-w-md">
           <div className="relative">
             <input
+              id="offers-search"
+              name="q"
               type="search"
               value={queryInput}
               onChange={(e) => setQueryInput(e.target.value)}
               placeholder={t.offers.searchPlaceholder}
-              className="w-full h-11 pl-4 pr-10 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors shadow-xs"
+              autoComplete="off"
+              spellCheck={false}
+              className="w-full h-11 pl-4 pr-10 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors shadow-xs"
             />
             {queryInput && (
               <button
@@ -138,7 +142,7 @@ function OffersPage() {
                   setQueryInput('')
                   navigate({ search: (prev) => ({ ...prev, q: undefined }) })
                 }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 rounded-xs"
                 aria-label="Clear search"
               >
                 ✕
@@ -168,7 +172,7 @@ function OffersPage() {
               <span className="w-36 text-left hidden md:inline-block">{t.common.channel}</span>
               <span className="w-28 text-right">{t.offers.colPrice}</span>
               <span className="w-32 text-center hidden lg:inline-block">{t.common.date}</span>
-              <span className="w-24 text-right">{t.common.action}</span>
+              <span className="w-32 text-right">{t.common.action}</span>
             </div>
 
             <div className="divide-y divide-slate-100">
@@ -194,22 +198,22 @@ function OffersPage() {
                   </div>
 
                   <div className="w-28 text-right">
-                    <span className="text-sm font-bold text-emerald-700 whitespace-nowrap">
+                    <span className="text-sm font-bold text-emerald-700 whitespace-nowrap tabular-nums">
                       {item.formattedPrice || (item.extractedPrice ? `R$ ${item.extractedPrice.toFixed(2)}` : '-')}
                     </span>
                   </div>
 
-                  <div className="w-32 text-center hidden lg:block text-xs text-slate-400">
+                  <div className="w-32 text-center hidden lg:block text-xs text-slate-400 tabular-nums">
                     {formatDate(item.createdAt)}
                   </div>
 
-                  <div className="w-24 text-right">
+                  <div className="w-32 text-right">
                     {item.offerUrl ? (
                       <a
                         href={item.offerUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs font-bold text-blue-700 hover:text-blue-800 hover:underline cursor-pointer"
+                        className="h-10 px-3.5 inline-flex items-center justify-center text-xs font-bold text-blue-700 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-md transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
                       >
                         {t.offers.openLink}
                       </a>
@@ -246,7 +250,7 @@ function OffersPage() {
                 className="py-3.5 px-4 flex items-center hover:bg-slate-50/70 transition-colors rounded-lg gap-2"
               >
                 <div className="w-48 text-left">
-                  <span className="inline-block bg-emerald-50 border border-emerald-300 text-emerald-800 font-mono font-bold text-xs px-2.5 py-1 rounded-md tracking-wider">
+                  <span className="inline-block bg-emerald-50 border border-emerald-300 text-emerald-800 font-mono font-bold text-xs px-2.5 py-1 rounded-md tracking-wider tabular-nums">
                     {item.code}
                   </span>
                 </div>
@@ -267,7 +271,7 @@ function OffersPage() {
                   {item.channelDisplay}
                 </div>
 
-                <div className="w-32 text-center hidden xl:block text-xs text-slate-400">
+                <div className="w-32 text-center hidden xl:block text-xs text-slate-400 tabular-nums">
                   {formatDate(item.createdAt)}
                 </div>
 
@@ -276,7 +280,7 @@ function OffersPage() {
                     text={item.code}
                     label={t.common.copyCoupon}
                     variant="green"
-                    className="!text-xs !py-1.5 !px-3"
+                    className="h-10 px-3.5 !text-xs rounded-md"
                   />
                 </div>
               </div>

@@ -148,10 +148,10 @@ function AdminChannelsPage() {
           <span className="text-[11px] font-bold text-emerald-700 tracking-wider uppercase select-none mb-1">
             {t.channels.kpiAccount}
           </span>
-          <span className="text-xl font-bold text-slate-900 tracking-tight truncate">
+          <span className="text-xl font-bold text-slate-900 tracking-tight truncate tabular-nums">
             {data?.phoneMasked || '-'}
           </span>
-          <span className="text-xs text-slate-500 mt-1">
+          <span className="text-xs text-slate-500 mt-1 tabular-nums">
             {t.telegram.syncedChannels(data?.totalChannelsCount ?? 0)}
           </span>
         </div>
@@ -164,7 +164,7 @@ function AdminChannelsPage() {
           <span className="text-xl font-bold text-slate-900 tracking-tight truncate">
             {data?.couponsTopic || 'promo/cupom'}
           </span>
-          <span className="text-xs text-slate-500 mt-1">
+          <span className="text-xs text-slate-500 mt-1 tabular-nums">
             {t.channels.kpiCouponsDesc(activeCouponsCount)}
           </span>
         </div>
@@ -177,7 +177,7 @@ function AdminChannelsPage() {
           <span className="text-xl font-bold text-slate-900 tracking-tight truncate">
             {data?.adminProductTopic || 'promo/user/...'}
           </span>
-          <span className="text-xs text-slate-500 mt-1">
+          <span className="text-xs text-slate-500 mt-1 tabular-nums">
             {t.channels.kpiProductsDesc(activeProductsCount)}
           </span>
         </div>
@@ -199,11 +199,15 @@ function AdminChannelsPage() {
           {/* Toolbar Row */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             <input
+              id="channel-search"
+              name="q"
               type="search"
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
               placeholder={t.channels.searchPlaceholder}
-              className="w-full sm:w-72 h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              autoComplete="off"
+              spellCheck={false}
+              className="w-full sm:w-72 h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
             />
 
             <div className="flex items-center gap-2.5">
@@ -211,7 +215,7 @@ function AdminChannelsPage() {
                 type="button"
                 onClick={handleSync}
                 disabled={syncChannelsMutation.isPending}
-                className="h-10 px-4 bg-blue-50 border border-blue-300 hover:bg-blue-100 text-blue-700 font-bold text-xs rounded-lg transition-colors cursor-pointer select-none disabled:opacity-50"
+                className="h-10 px-4 bg-blue-50 border border-blue-300 hover:bg-blue-100 text-blue-700 font-bold text-xs rounded-lg transition-colors cursor-pointer select-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
               >
                 {syncChannelsMutation.isPending ? '...' : t.channels.syncButton}
               </button>
@@ -220,7 +224,7 @@ function AdminChannelsPage() {
                 type="button"
                 onClick={handleSaveChanges}
                 disabled={!hasChanges || updateChannelsMutation.isPending}
-                className={`h-10 px-4 font-bold text-xs rounded-lg transition-colors cursor-pointer select-none shadow-xs ${
+                className={`h-10 px-4 font-bold text-xs rounded-lg transition-colors cursor-pointer select-none shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
                   hasChanges
                     ? 'bg-blue-600 hover:bg-blue-700 text-white'
                     : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'
@@ -266,7 +270,7 @@ function AdminChannelsPage() {
                   </div>
 
                   <div className="w-56 text-left hidden sm:block">
-                    <span className="text-xs text-slate-600 font-mono truncate block">
+                    <span className="text-xs text-slate-600 font-mono tabular-nums truncate block">
                       {ch.username ? `@${ch.username}` : `Chat ID: ${ch.chatId}`}
                     </span>
                   </div>
@@ -276,7 +280,7 @@ function AdminChannelsPage() {
                     <button
                       type="button"
                       onClick={() => toggleProducts(ch.chatId)}
-                      className={`px-3 py-1.5 rounded-md font-bold text-xs transition-colors cursor-pointer select-none ${
+                      className={`px-3 py-1.5 rounded-md font-bold text-xs transition-colors cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
                         current.monitorProducts
                           ? 'bg-blue-50 border border-blue-400 text-blue-700 hover:bg-blue-100'
                           : 'bg-slate-50 border border-slate-300 text-slate-500 hover:bg-slate-100'
@@ -291,7 +295,7 @@ function AdminChannelsPage() {
                     <button
                       type="button"
                       onClick={() => toggleCoupons(ch.chatId)}
-                      className={`px-3 py-1.5 rounded-md font-bold text-xs transition-colors cursor-pointer select-none ${
+                      className={`px-3 py-1.5 rounded-md font-bold text-xs transition-colors cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 ${
                         current.monitorCoupons
                           ? 'bg-emerald-50 border border-emerald-300 text-emerald-800 hover:bg-emerald-100'
                           : 'bg-slate-50 border border-slate-300 text-slate-500 hover:bg-slate-100'

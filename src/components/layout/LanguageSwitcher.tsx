@@ -24,7 +24,7 @@ export function LanguageSwitcher({ variant = 'light' }: LanguageSwitcherProps) {
       <button
         type="button"
         onClick={() => handleSelect('pt-BR')}
-        className={`cursor-pointer transition-colors ${
+        className={`cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-xs ${
           locale === 'pt-BR'
             ? `${activeColor} font-bold`
             : `${inactiveColor} font-normal hover:text-slate-200`
@@ -39,7 +39,7 @@ export function LanguageSwitcher({ variant = 'light' }: LanguageSwitcherProps) {
       <button
         type="button"
         onClick={() => handleSelect('en-US')}
-        className={`cursor-pointer transition-colors ${
+        className={`cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-xs ${
           locale === 'en-US'
             ? `${activeColor} font-bold`
             : `${inactiveColor} font-normal hover:text-slate-200`

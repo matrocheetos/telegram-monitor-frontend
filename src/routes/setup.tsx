@@ -91,12 +91,15 @@ function SetupPage() {
               </label>
               <input
                 id="setup-username"
+                name="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder={t.setup.usernamePlaceholder}
                 required
-                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                autoComplete="username"
+                spellCheck={false}
+                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
               />
             </div>
 
@@ -106,13 +109,15 @@ function SetupPage() {
               </label>
               <input
                 id="setup-password"
+                name="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
                 required
                 minLength={8}
-                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                autoComplete="new-password"
+                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
               />
             </div>
 
@@ -122,19 +127,21 @@ function SetupPage() {
               </label>
               <input
                 id="setup-confirm-password"
+                name="confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••••••"
                 required
-                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                autoComplete="new-password"
+                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
               />
             </div>
 
             <button
               type="submit"
               disabled={setupMutation.isPending}
-              className="mt-2 h-12 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-[15px] rounded-lg transition-colors cursor-pointer w-full disabled:opacity-50 shadow-xs"
+              className="mt-2 h-12 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-[15px] rounded-lg transition-colors cursor-pointer w-full disabled:opacity-50 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               {setupMutation.isPending ? '...' : t.setup.submit}
             </button>

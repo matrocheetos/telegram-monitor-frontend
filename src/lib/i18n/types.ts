@@ -12,7 +12,10 @@ export interface I18nDictionary {
     logout: string
     copied: string
     copyUrl: string
+    copyTopic: string
     copyCoupon: string
+    topicCopied: string
+    openStore: string
     remove: string
     save: string
     saveChanges: string
@@ -178,5 +181,35 @@ export interface I18nDictionary {
     conflict: string
     unprocessable: string
     genericError: string
+  }
+  aria: {
+    ntfyInfoButton: string
+    mobileMenuButton: string
+  }
+  ntfyModal: {
+    badgeUser: (username: string) => string
+    badgeCoupons: string
+    titleProduct: string
+    titleCoupon: string
+    aboutProductTitle: (topic: string) => string
+    aboutProductDesc: string
+    aboutCouponTitle: (topic: string) => string
+    aboutCouponDesc: string
+    step1Title: string
+    androidBtn: string
+    androidUrl: string
+    iosBtn: string
+    iosUrl: string
+    step2Title: string
+    step2Item1: string
+    step2Item2Product: (topic: string) => string
+    step2Item2Coupon: (topic: string) => string
+    step2Item3: (url: string) => string
+    step2Item4Product: (couponTopic: string) => string
+    step2Item4Coupon: (userTopic: string) => string
+    topicLabel: (topic: string) => string
+    alsoAvailableCoupon: (topic: string) => string
+    alsoAvailableProduct: (topic: string) => string
+    doneBtn: string
   }
 }

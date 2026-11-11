@@ -86,12 +86,15 @@ function LoginPage() {
               </label>
               <input
                 id="login-username"
+                name="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="admin"
                 required
-                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                autoComplete="username"
+                spellCheck={false}
+                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
               />
             </div>
 
@@ -101,19 +104,21 @@ function LoginPage() {
               </label>
               <input
                 id="login-password"
+                name="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
                 required
-                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                autoComplete="current-password"
+                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
               />
             </div>
 
             <button
               type="submit"
               disabled={loginMutation.isPending}
-              className="mt-2 h-12 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-[16px] rounded-lg transition-colors cursor-pointer w-full disabled:opacity-50 shadow-xs"
+              className="mt-2 h-12 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-[16px] rounded-lg transition-colors cursor-pointer w-full disabled:opacity-50 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               {loginMutation.isPending ? '...' : t.login.submit}
             </button>

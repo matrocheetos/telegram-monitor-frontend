@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useI18n } from '../../lib/i18n'
 
+export type CopyButtonVariant = 'blue' | 'green' | 'blue-outline' | 'green-outline'
+
 interface CopyButtonProps {
   text: string
   label?: string
   copiedLabel?: string
-  variant?: 'blue' | 'green'
+  variant?: CopyButtonVariant
   className?: string
 }
 
@@ -19,9 +21,10 @@ export function CopyButton({
   const { t } = useI18n()
   const [copied, setCopied] = useState(false)
 
-  const defaultLabel = variant === 'green' ? t.common.copyCoupon : t.common.copyUrl
+  const defaultLabel = variant.startsWith('green') ? t.common.copyCoupon : t.common.copyUrl
   const finalLabel = label ?? defaultLabel
-  const finalCopied = copiedLabel ?? t.common.copied
+  const defaultCopied = finalLabel === t.common.copyTopic ? t.common.topicCopied : t.common.copied
+  const finalCopied = copiedLabel ?? defaultCopied
 
   const handleCopy = async () => {
     try {
@@ -44,15 +47,22 @@ export function CopyButton({
     }
   }
 
-  const baseStyles = 'inline-flex items-center justify-center font-semibold text-[13px] rounded-lg transition-colors cursor-pointer select-none px-3.5 py-2'
+  const baseStyles =
+    'inline-flex items-center justify-center font-semibold text-[13px] rounded-lg transition-colors cursor-pointer select-none px-3.5 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1'
 
-  const variantStyles = {
+  const variantStyles: Record<CopyButtonVariant, string> = {
     blue: copied
-      ? 'bg-blue-100 border border-blue-400 text-blue-800'
-      : 'bg-blue-50 border border-blue-300 text-blue-700 hover:bg-blue-100 active:bg-blue-200',
+      ? 'bg-blue-700 text-white shadow-xs focus-visible:ring-blue-500'
+      : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-xs focus-visible:ring-blue-500',
+    'blue-outline': copied
+      ? 'bg-blue-100 border border-blue-400 text-blue-800 focus-visible:ring-blue-500'
+      : 'bg-[#eff6ff] hover:bg-blue-100 active:bg-blue-200 border border-[#93c5fd] text-[#1d4ed8] focus-visible:ring-blue-500',
     green: copied
-      ? 'bg-emerald-600 text-white border border-emerald-700 shadow-xs'
-      : 'bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold border border-emerald-700 shadow-xs',
+      ? 'bg-[#15803d] text-white shadow-xs focus-visible:ring-emerald-500'
+      : 'bg-[#16a34a] hover:bg-[#15803d] active:bg-[#166534] text-white shadow-xs focus-visible:ring-emerald-500',
+    'green-outline': copied
+      ? 'bg-emerald-100 border border-emerald-400 text-emerald-800 focus-visible:ring-emerald-500'
+      : 'bg-[#f0fdf4] hover:bg-emerald-100 active:bg-emerald-200 border border-[#86efac] text-[#15803d] focus-visible:ring-emerald-500',
   }
 
   return (

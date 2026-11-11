@@ -131,12 +131,15 @@ function AdminUsersPage() {
             </label>
             <input
               id="create-username"
+              name="username"
               type="text"
               value={newUsername}
               onChange={(e) => setNewUsername(e.target.value)}
               placeholder={t.users.usernamePlaceholder}
               required
-              className="h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              autoComplete="off"
+              spellCheck={false}
+              className="h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
             />
           </div>
 
@@ -146,13 +149,15 @@ function AdminUsersPage() {
             </label>
             <input
               id="create-password"
+              name="password"
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               placeholder="••••••••••••"
               required
               minLength={8}
-              className="h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              autoComplete="new-password"
+              className="h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
             />
           </div>
 
@@ -162,9 +167,10 @@ function AdminUsersPage() {
             </label>
             <select
               id="create-role"
+              name="role"
               value={newRole}
               onChange={(e) => setNewRole(e.target.value as UserRole)}
-              className="h-10 px-3 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors cursor-pointer"
+              className="h-10 px-3 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors cursor-pointer"
             >
               <option value="user">{t.common.user}</option>
               <option value="admin">{t.common.administrator}</option>
@@ -174,7 +180,7 @@ function AdminUsersPage() {
           <button
             type="submit"
             disabled={createUserMutation.isPending}
-            className="h-10 px-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-xs rounded-lg transition-colors cursor-pointer disabled:opacity-50 shadow-xs"
+            className="h-10 px-4 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-xs rounded-lg transition-colors cursor-pointer disabled:opacity-50 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           >
             {createUserMutation.isPending ? '...' : t.users.createUser}
           </button>
@@ -192,7 +198,7 @@ function AdminUsersPage() {
         </div>
       ) : (
         <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs flex flex-col gap-4">
-          <h2 className="text-base font-bold text-slate-900 select-none">
+          <h2 className="text-base font-bold text-slate-900 select-none tabular-nums">
             {t.users.registeredUsersTitle(users.length)}
           </h2>
 
@@ -241,7 +247,7 @@ function AdminUsersPage() {
                   </div>
 
                   <div className="w-40 text-center hidden md:block">
-                    <span className="text-xs font-semibold text-emerald-700">
+                    <span className="text-xs font-semibold text-emerald-700 tabular-nums">
                       {t.users.termsActiveCount(user.activeInterestsCount)}
                     </span>
                   </div>
@@ -250,13 +256,13 @@ function AdminUsersPage() {
                     <button
                       type="button"
                       onClick={() => handleOpenResetModal(user)}
-                      className="px-2.5 py-1 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded-md transition-colors cursor-pointer"
+                      className="h-10 px-3 inline-flex items-center justify-center text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 border border-slate-300 rounded-md transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
                     >
                       {t.users.resetPassword}
                     </button>
 
                     {isSelf ? (
-                      <span className="px-2.5 py-1 text-xs font-semibold text-slate-400 bg-slate-100 border border-slate-200 rounded-md select-none">
+                      <span className="h-10 px-3 inline-flex items-center justify-center text-xs font-semibold text-slate-400 bg-slate-100 border border-slate-200 rounded-md select-none">
                         {t.common.protected}
                       </span>
                     ) : (
@@ -264,7 +270,7 @@ function AdminUsersPage() {
                         type="button"
                         onClick={() => handleDeleteUser(user)}
                         disabled={deleteUserMutation.isPending}
-                        className="px-2.5 py-1 text-xs font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded-md transition-colors cursor-pointer disabled:opacity-50"
+                        className="h-10 px-3 inline-flex items-center justify-center text-xs font-semibold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded-md transition-colors cursor-pointer disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1"
                       >
                         {t.users.deleteUser}
                       </button>

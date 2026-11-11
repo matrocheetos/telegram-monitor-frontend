@@ -349,8 +349,8 @@ describe('Fase 5: Public and User Pages (Boards 1, 2, 3, 7)', () => {
 
       await screen.findByText('Painel do Usuário — Lista de Interesse')
 
-      const termInput = screen.getByPlaceholderText('Nintendo Switch 2 -capa -pelicula')
-      const priceInput = screen.getByPlaceholderText('Preço Máximo (Opcional)')
+      const termInput = screen.getByPlaceholderText('Ex: switch 2 -capa -pelicula…')
+      const priceInput = screen.getByPlaceholderText('Ex: 2800,00…')
       const submitBtn = screen.getByRole('button', { name: '+ Adicionar Interesse' })
 
       fireEvent.change(termInput, { target: { value: 'RTX 4060' } })

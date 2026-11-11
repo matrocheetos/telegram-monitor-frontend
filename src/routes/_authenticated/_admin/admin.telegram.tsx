@@ -110,10 +110,10 @@ function AdminTelegramPage() {
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               {t.telegram.activeSession}
             </span>
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">
+            <h2 className="text-xl font-bold text-slate-900 tracking-tight tabular-nums">
               {t.telegram.connectedAccount(status.phoneMasked)}
             </h2>
-            <span className="text-sm text-slate-600 mt-0.5">
+            <span className="text-sm text-slate-600 mt-0.5 tabular-nums">
               {t.telegram.syncedChannels(status.channelsCount)}
             </span>
           </div>
@@ -122,7 +122,7 @@ function AdminTelegramPage() {
             <button
               type="button"
               onClick={() => navigate({ to: '/admin/channels' })}
-              className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-lg transition-colors cursor-pointer select-none"
+              className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-lg transition-colors cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
             >
               {t.telegram.selectChannels}
             </button>
@@ -130,7 +130,7 @@ function AdminTelegramPage() {
               type="button"
               onClick={handleDisconnect}
               disabled={disconnectMutation.isPending}
-              className="px-4 py-2 bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 font-semibold text-xs rounded-lg transition-colors cursor-pointer disabled:opacity-50 select-none"
+              className="px-4 py-2 bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 font-semibold text-xs rounded-lg transition-colors cursor-pointer disabled:opacity-50 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1"
             >
               {disconnectMutation.isPending ? '...' : t.telegram.disconnect}
             </button>
@@ -146,7 +146,7 @@ function AdminTelegramPage() {
             <h2 className="text-xl font-bold text-slate-900 tracking-tight">
               {t.telegram.noAccountConnected}
             </h2>
-            <span className="text-sm text-slate-600 mt-0.5">
+            <span className="text-sm text-slate-600 mt-0.5 tabular-nums">
               {t.telegram.syncedChannels(0)}
             </span>
           </div>
@@ -184,13 +184,17 @@ function AdminTelegramPage() {
                 </label>
                 <input
                   id="tg-api-id"
+                  name="apiId"
                   type="text"
                   value={apiId}
                   onChange={(e) => setApiId(e.target.value)}
                   placeholder={t.telegram.apiIdPlaceholder}
                   required
                   disabled={sendCodeMutation.isPending}
-                  className="h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  inputMode="numeric"
+                  spellCheck={false}
+                  autoComplete="off"
+                  className="h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
                 />
               </div>
 
@@ -200,13 +204,16 @@ function AdminTelegramPage() {
                 </label>
                 <input
                   id="tg-api-hash"
+                  name="apiHash"
                   type="text"
                   value={apiHash}
                   onChange={(e) => setApiHash(e.target.value)}
                   placeholder={t.telegram.apiHashPlaceholder}
                   required
                   disabled={sendCodeMutation.isPending}
-                  className="h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  spellCheck={false}
+                  autoComplete="off"
+                  className="h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
                 />
               </div>
 
@@ -216,13 +223,16 @@ function AdminTelegramPage() {
                 </label>
                 <input
                   id="tg-phone"
+                  name="phone"
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder={t.telegram.phonePlaceholder}
                   required
                   disabled={sendCodeMutation.isPending}
-                  className="h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  className="h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
                 />
               </div>
             </form>
@@ -233,7 +243,7 @@ function AdminTelegramPage() {
               form="step1-form"
               type="submit"
               disabled={sendCodeMutation.isPending}
-              className="w-full h-11 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm rounded-lg transition-colors cursor-pointer disabled:opacity-50 shadow-xs"
+              className="w-full h-11 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm rounded-lg transition-colors cursor-pointer disabled:opacity-50 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               {sendCodeMutation.isPending ? '...' : t.telegram.sendOtp}
             </button>
@@ -269,13 +279,17 @@ function AdminTelegramPage() {
                 </label>
                 <input
                   id="tg-otp"
+                  name="code"
                   type="text"
                   value={otpCode}
                   onChange={(e) => setOtpCode(e.target.value)}
                   placeholder={codeSent ? '12345' : t.telegram.codeDisabledPlaceholder}
                   required
                   disabled={!codeSent || verifyMutation.isPending}
-                  className="h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors disabled:bg-slate-100"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  spellCheck={false}
+                  className="h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 transition-colors disabled:bg-slate-100 tabular-nums"
                 />
               </div>
 
@@ -286,12 +300,14 @@ function AdminTelegramPage() {
                 </label>
                 <input
                   id="tg-2fa"
+                  name="twoFactor"
                   type="password"
                   value={password2FA}
                   onChange={(e) => setPassword2FA(e.target.value)}
                   placeholder="••••••••••••"
                   disabled={!codeSent || verifyMutation.isPending}
-                  className="h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors disabled:bg-slate-100"
+                  autoComplete="current-password"
+                  className="h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 transition-colors disabled:bg-slate-100"
                 />
               </div>
 
@@ -311,7 +327,7 @@ function AdminTelegramPage() {
               form="step2-form"
               type="submit"
               disabled={!codeSent || verifyMutation.isPending}
-              className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-sm rounded-lg transition-colors cursor-pointer disabled:opacity-50 shadow-xs"
+              className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-sm rounded-lg transition-colors cursor-pointer disabled:opacity-50 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
             >
               {verifyMutation.isPending ? '...' : t.telegram.connectAccount}
             </button>

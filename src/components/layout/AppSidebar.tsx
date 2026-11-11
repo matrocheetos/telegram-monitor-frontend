@@ -53,9 +53,9 @@ export function AppSidebar({ username, role }: AppSidebarProps) {
             <Link
               key={item.to}
               to={item.to}
-              className="px-3 py-2.5 rounded-lg text-sm text-slate-300 font-normal hover:bg-slate-800 hover:text-white transition-colors flex items-center"
+              className="px-3 py-2.5 rounded-lg text-sm text-slate-300 font-normal hover:bg-slate-800 hover:text-white transition-colors flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900"
               activeProps={{
-                className: 'px-3 py-2.5 rounded-lg text-sm bg-blue-600 text-white font-semibold transition-colors flex items-center',
+                className: 'px-3 py-2.5 rounded-lg text-sm bg-blue-600 text-white font-semibold transition-colors flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900',
               }}
             >
               {item.label}
@@ -82,7 +82,7 @@ export function AppSidebar({ username, role }: AppSidebarProps) {
           type="button"
           onClick={handleLogout}
           disabled={logoutMutation.isPending}
-          className="bg-slate-700 hover:bg-slate-600 active:bg-slate-800 text-slate-100 rounded-md py-2 px-3 text-xs font-semibold text-center transition-colors cursor-pointer w-full disabled:opacity-50"
+          className="h-11 bg-slate-700 hover:bg-slate-600 active:bg-slate-800 text-slate-100 rounded-md px-3 text-xs font-semibold flex items-center justify-center transition-colors cursor-pointer w-full disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
         >
           {t.common.logout}
         </button>
