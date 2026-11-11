@@ -3,7 +3,7 @@ import { authQueries } from '../lib/api/queries'
 import { AppSidebar } from '../components/layout/AppSidebar'
 
 export const Route = createFileRoute('/_authenticated')({
-  beforeLoad: async ({ context, location }) => {
+  beforeLoad: async ({ context }) => {
     const session = await context.queryClient.ensureQueryData(authQueries.session())
 
     if (session.needsInitialSetup) {
