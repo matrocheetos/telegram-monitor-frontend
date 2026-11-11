@@ -26,12 +26,12 @@ export function EmptyState({ type, onSyncChannels, isSyncingChannels = false }: 
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs w-full" data-testid={`empty-state-${type}`}>
-      <h3 className="text-base font-bold text-slate-900 mb-4 select-none">
+    <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-6 shadow-xs w-full" data-testid={`empty-state-${type}`}>
+      <h3 className="text-base font-bold text-slate-900 mb-3 sm:mb-4 select-none">
         {titles[type]}
       </h3>
 
-      <div className="bg-slate-100 border border-slate-200 rounded-lg px-4 py-2.5 mb-3 flex items-center justify-between text-[11px] font-bold text-slate-600 uppercase tracking-wider select-none">
+      <div className="hidden md:flex bg-slate-100 border border-slate-200 rounded-lg px-4 py-2.5 mb-3 items-center justify-between text-[11px] font-bold text-slate-600 uppercase tracking-wider select-none">
         {type === 'interests' && (
           <>
             <span className="flex-1">{t.dashboard.termHeader}</span>
@@ -71,7 +71,7 @@ export function EmptyState({ type, onSyncChannels, isSyncingChannels = false }: 
         )}
       </div>
 
-      <div className="bg-slate-50 border border-slate-200 rounded-lg min-h-[220px] flex flex-col items-center justify-center p-6 gap-3">
+      <div className="bg-slate-50 border border-slate-200 rounded-lg min-h-[160px] sm:min-h-[220px] flex flex-col items-center justify-center p-4 sm:p-6 gap-3">
         <p className="text-sm font-semibold text-slate-500 text-center select-none">
           {messages[type]}
         </p>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { FormEvent } from 'react'
 import { useI18n } from '../../lib/i18n'
 
@@ -21,6 +21,17 @@ export function ResetPasswordModal({
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
 
+  useEffect(() => {
+    if (!isOpen) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !isPending) {
+        onClose()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, isPending, onClose])
+
   if (!isOpen) return null
 
   const handleSubmit = (e: FormEvent) => {
@@ -38,9 +49,13 @@ export function ResetPasswordModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="reset-password-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs"
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs overscroll-contain overflow-y-auto"
     >
-      <div className="bg-white rounded-xl shadow-xl border border-slate-200 w-full max-w-md p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-150">
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white rounded-xl shadow-xl border border-slate-200 w-full max-w-md p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-150"
+      >
         <h2 id="reset-password-title" className="text-lg font-bold text-slate-900 select-none">
           {t.users.resetPassword}: @{username}
         </h2>
@@ -85,7 +100,7 @@ export function ResetPasswordModal({
               disabled={isPending}
               className="px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors cursor-pointer disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
             >
-              {isPending ? '...' : t.common.save}
+              {isPending ? '…' : t.common.save}
             </button>
           </div>
         </form>

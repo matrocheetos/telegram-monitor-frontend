@@ -142,42 +142,42 @@ function AdminChannelsPage() {
       )}
 
       {/* KPI Summary Row (Board 5) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
         {/* KPI 1 - Account */}
-        <div className="bg-white border-2 border-emerald-300 rounded-xl p-5 shadow-xs flex flex-col">
-          <span className="text-[11px] font-bold text-emerald-700 tracking-wider uppercase select-none mb-1">
+        <div className="bg-white border-2 border-emerald-300 rounded-xl p-3 sm:p-5 shadow-xs flex flex-col min-w-0">
+          <span className="text-[10px] sm:text-[11px] font-bold text-emerald-700 tracking-wider uppercase select-none mb-1 truncate">
             {t.channels.kpiAccount}
           </span>
-          <span className="text-xl font-bold text-slate-900 tracking-tight truncate tabular-nums">
+          <span className="text-sm sm:text-xl font-bold text-slate-900 tracking-tight truncate tabular-nums">
             {data?.phoneMasked || '-'}
           </span>
-          <span className="text-xs text-slate-500 mt-1 tabular-nums">
+          <span className="text-[10px] sm:text-xs text-slate-500 mt-1 tabular-nums truncate">
             {t.telegram.syncedChannels(data?.totalChannelsCount ?? 0)}
           </span>
         </div>
 
         {/* KPI 2 - Coupons */}
-        <div className="bg-white border-2 border-amber-300 rounded-xl p-5 shadow-xs flex flex-col">
-          <span className="text-[11px] font-bold text-amber-700 tracking-wider uppercase select-none mb-1">
+        <div className="bg-white border-2 border-amber-300 rounded-xl p-3 sm:p-5 shadow-xs flex flex-col min-w-0">
+          <span className="text-[10px] sm:text-[11px] font-bold text-amber-700 tracking-wider uppercase select-none mb-1 truncate">
             {t.channels.kpiCoupons}
           </span>
-          <span className="text-xl font-bold text-slate-900 tracking-tight truncate">
+          <span className="text-sm sm:text-xl font-bold text-slate-900 tracking-tight truncate">
             {data?.couponsTopic || 'promo/cupom'}
           </span>
-          <span className="text-xs text-slate-500 mt-1 tabular-nums">
+          <span className="text-[10px] sm:text-xs text-slate-500 mt-1 tabular-nums truncate">
             {t.channels.kpiCouponsDesc(activeCouponsCount)}
           </span>
         </div>
 
         {/* KPI 3 - Products */}
-        <div className="bg-white border-2 border-blue-300 rounded-xl p-5 shadow-xs flex flex-col">
-          <span className="text-[11px] font-bold text-blue-700 tracking-wider uppercase select-none mb-1">
+        <div className="bg-white border-2 border-blue-300 rounded-xl p-3 sm:p-5 shadow-xs flex flex-col min-w-0">
+          <span className="text-[10px] sm:text-[11px] font-bold text-blue-700 tracking-wider uppercase select-none mb-1 truncate">
             {t.channels.kpiProducts}
           </span>
-          <span className="text-xl font-bold text-slate-900 tracking-tight truncate">
-            {data?.adminProductTopic || 'promo/user/...'}
+          <span className="text-sm sm:text-xl font-bold text-slate-900 tracking-tight truncate">
+            {data?.adminProductTopic || 'promo/user/…'}
           </span>
-          <span className="text-xs text-slate-500 mt-1 tabular-nums">
+          <span className="text-[10px] sm:text-xs text-slate-500 mt-1 tabular-nums truncate">
             {t.channels.kpiProductsDesc(activeProductsCount)}
           </span>
         </div>
@@ -186,7 +186,7 @@ function AdminChannelsPage() {
       {/* Channels Table Card */}
       {isLoading ? (
         <div className="bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-400 font-medium">
-          ...
+          …
         </div>
       ) : !data || data.channels.length === 0 ? (
         <EmptyState
@@ -195,7 +195,7 @@ function AdminChannelsPage() {
           isSyncingChannels={syncChannelsMutation.isPending}
         />
       ) : (
-        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs flex flex-col gap-4">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-6 shadow-xs flex flex-col gap-4">
           {/* Toolbar Row */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             <input
@@ -207,31 +207,31 @@ function AdminChannelsPage() {
               placeholder={t.channels.searchPlaceholder}
               autoComplete="off"
               spellCheck={false}
-              className="w-full sm:w-72 h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
+              className="w-full sm:w-72 h-11 sm:h-10 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
             />
 
-            <div className="flex items-center gap-2.5">
+            <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
               <button
                 type="button"
                 onClick={handleSync}
                 disabled={syncChannelsMutation.isPending}
-                className="h-10 px-4 bg-blue-50 border border-blue-300 hover:bg-blue-100 text-blue-700 font-bold text-xs rounded-lg transition-colors cursor-pointer select-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+                className="h-11 sm:h-10 px-3 sm:px-4 bg-blue-50 border border-blue-300 hover:bg-blue-100 text-blue-700 font-bold text-xs rounded-lg transition-colors cursor-pointer select-none disabled:opacity-50 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
               >
-                {syncChannelsMutation.isPending ? '...' : t.channels.syncButton}
+                {syncChannelsMutation.isPending ? '…' : t.channels.syncButton}
               </button>
 
               <button
                 type="button"
                 onClick={handleSaveChanges}
                 disabled={!hasChanges || updateChannelsMutation.isPending}
-                className={`h-10 px-4 font-bold text-xs rounded-lg transition-colors cursor-pointer select-none shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
+                className={`h-11 sm:h-10 px-3 sm:px-4 font-bold text-xs rounded-lg transition-colors cursor-pointer select-none shadow-xs flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
                   hasChanges
                     ? 'bg-blue-600 hover:bg-blue-700 text-white'
                     : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'
                 }`}
               >
                 {updateChannelsMutation.isPending
-                  ? '...'
+                  ? '…'
                   : saveSuccess
                     ? t.common.saveChanges + ' ✓'
                     : t.channels.saveButton}
@@ -239,16 +239,8 @@ function AdminChannelsPage() {
             </div>
           </div>
 
-          {/* Table Header */}
-          <div className="bg-slate-100 border border-slate-200 rounded-lg px-4 py-2.5 flex items-center text-[11px] font-bold text-slate-600 uppercase tracking-wider select-none">
-            <span className="flex-1">{t.common.channelTelegramGroup}</span>
-            <span className="w-56 text-left hidden sm:inline-block">{t.common.chatIdUsername}</span>
-            <span className="w-48 text-center">{t.channels.colProducts}</span>
-            <span className="w-48 text-center">{t.channels.colCoupons}</span>
-          </div>
-
-          {/* Table Body */}
-          <div className="divide-y divide-slate-100">
+          {/* Mobile Channels Card List (< md) */}
+          <div className="md:hidden divide-y divide-slate-100">
             {filteredChannels.map((ch: TelegramChannelDTO) => {
               const current = channelOverrides[ch.chatId] ?? {
                 monitorProducts: ch.monitorProducts,
@@ -256,31 +248,22 @@ function AdminChannelsPage() {
               }
 
               return (
-                <div
-                  key={ch.chatId}
-                  className="py-3.5 px-4 flex items-center hover:bg-slate-50/70 transition-colors rounded-lg gap-2"
-                >
-                  <div className="flex-1 min-w-0 pr-4">
-                    <span className="text-sm font-semibold text-slate-900 block truncate" title={ch.title}>
+                <div key={ch.chatId} className="py-3 flex flex-col gap-2">
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-xs sm:text-sm font-bold text-slate-900 truncate" title={ch.title}>
                       {ch.title}
                     </span>
-                    <span className="text-xs text-slate-400 font-mono sm:hidden block mt-0.5">
-                      {ch.username ? `@${ch.username}` : `ID: ${ch.chatId}`}
-                    </span>
-                  </div>
-
-                  <div className="w-56 text-left hidden sm:block">
-                    <span className="text-xs text-slate-600 font-mono tabular-nums truncate block">
+                    <span className="text-[11px] text-slate-500 font-mono tabular-nums truncate mt-0.5">
                       {ch.username ? `@${ch.username}` : `Chat ID: ${ch.chatId}`}
                     </span>
                   </div>
 
-                  {/* Clean Products Toggle Button - strictly NO icons, NO ticks */}
-                  <div className="w-48 text-center">
+                  {/* Clean Toggle Buttons side-by-side - strictly NO icons, NO ticks */}
+                  <div className="grid grid-cols-2 gap-2 mt-1">
                     <button
                       type="button"
                       onClick={() => toggleProducts(ch.chatId)}
-                      className={`px-3 py-1.5 rounded-md font-bold text-xs transition-colors cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
+                      className={`h-[42px] px-2 rounded-lg font-bold text-[11px] flex items-center justify-center transition-colors cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                         current.monitorProducts
                           ? 'bg-blue-50 border border-blue-400 text-blue-700 hover:bg-blue-100'
                           : 'bg-slate-50 border border-slate-300 text-slate-500 hover:bg-slate-100'
@@ -288,14 +271,11 @@ function AdminChannelsPage() {
                     >
                       {current.monitorProducts ? t.channels.monitorProducts : t.channels.ignoreProducts}
                     </button>
-                  </div>
 
-                  {/* Clean Coupons Toggle Button - strictly NO icons, NO ticks */}
-                  <div className="w-48 text-center">
                     <button
                       type="button"
                       onClick={() => toggleCoupons(ch.chatId)}
-                      className={`px-3 py-1.5 rounded-md font-bold text-xs transition-colors cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 ${
+                      className={`h-[42px] px-2 rounded-lg font-bold text-[11px] flex items-center justify-center transition-colors cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
                         current.monitorCoupons
                           ? 'bg-emerald-50 border border-emerald-300 text-emerald-800 hover:bg-emerald-100'
                           : 'bg-slate-50 border border-slate-300 text-slate-500 hover:bg-slate-100'
@@ -307,6 +287,77 @@ function AdminChannelsPage() {
                 </div>
               )
             })}
+          </div>
+
+          {/* Desktop Table (>= md) */}
+          <div className="hidden md:block">
+            <div className="bg-slate-100 border border-slate-200 rounded-lg px-4 py-2.5 flex items-center text-[11px] font-bold text-slate-600 uppercase tracking-wider select-none mb-2">
+              <span className="flex-1">{t.common.channelTelegramGroup}</span>
+              <span className="w-56 text-left hidden sm:inline-block">{t.common.chatIdUsername}</span>
+              <span className="w-48 text-center">{t.channels.colProducts}</span>
+              <span className="w-48 text-center">{t.channels.colCoupons}</span>
+            </div>
+
+            <div className="divide-y divide-slate-100">
+              {filteredChannels.map((ch: TelegramChannelDTO) => {
+                const current = channelOverrides[ch.chatId] ?? {
+                  monitorProducts: ch.monitorProducts,
+                  monitorCoupons: ch.monitorCoupons,
+                }
+
+                return (
+                  <div
+                    key={ch.chatId}
+                    className="py-3.5 px-4 flex items-center hover:bg-slate-50/70 transition-colors rounded-lg gap-2"
+                  >
+                    <div className="flex-1 min-w-0 pr-4">
+                      <span className="text-sm font-semibold text-slate-900 block truncate" title={ch.title}>
+                        {ch.title}
+                      </span>
+                      <span className="text-xs text-slate-400 font-mono sm:hidden block mt-0.5">
+                        {ch.username ? `@${ch.username}` : `ID: ${ch.chatId}`}
+                      </span>
+                    </div>
+
+                    <div className="w-56 text-left hidden sm:block">
+                      <span className="text-xs text-slate-600 font-mono tabular-nums truncate block">
+                        {ch.username ? `@${ch.username}` : `Chat ID: ${ch.chatId}`}
+                      </span>
+                    </div>
+
+                    {/* Clean Products Toggle Button - strictly NO icons, NO ticks */}
+                    <div className="w-48 text-center">
+                      <button
+                        type="button"
+                        onClick={() => toggleProducts(ch.chatId)}
+                        className={`px-3 py-1.5 rounded-md font-bold text-xs transition-colors cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
+                          current.monitorProducts
+                            ? 'bg-blue-50 border border-blue-400 text-blue-700 hover:bg-blue-100'
+                            : 'bg-slate-50 border border-slate-300 text-slate-500 hover:bg-slate-100'
+                        }`}
+                      >
+                        {current.monitorProducts ? t.channels.monitorProducts : t.channels.ignoreProducts}
+                      </button>
+                    </div>
+
+                    {/* Clean Coupons Toggle Button - strictly NO icons, NO ticks */}
+                    <div className="w-48 text-center">
+                      <button
+                        type="button"
+                        onClick={() => toggleCoupons(ch.chatId)}
+                        className={`px-3 py-1.5 rounded-md font-bold text-xs transition-colors cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 ${
+                          current.monitorCoupons
+                            ? 'bg-emerald-50 border border-emerald-300 text-emerald-800 hover:bg-emerald-100'
+                            : 'bg-slate-50 border border-slate-300 text-slate-500 hover:bg-slate-100'
+                        }`}
+                      >
+                        {current.monitorCoupons ? t.channels.monitorCoupons : t.channels.ignoreCoupons}
+                      </button>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
       )}

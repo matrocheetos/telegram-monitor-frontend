@@ -126,10 +126,10 @@ function DashboardPage() {
                 {t.dashboard.notificationChannel}
               </span>
               <span className="text-[20px] sm:text-[22px] font-bold text-slate-900 tracking-tight truncate mt-1">
-                {data?.userTopic || 'promo/user/...'}
+                {data?.userTopic || 'promo/user/…'}
               </span>
               <span className="text-[12px] sm:text-[13px] text-slate-600 font-normal truncate mt-0.5" title={userPublicUrl}>
-                {userPublicUrl || 'https://...'}
+                {userPublicUrl || 'https://…'}
               </span>
             </div>
 
@@ -190,7 +190,7 @@ function DashboardPage() {
                 {data?.couponsTopic || 'promo/cupom'}
               </span>
               <span className="text-[12px] sm:text-[13px] text-slate-600 font-normal truncate mt-0.5" title={couponsPublicUrl}>
-                {couponsPublicUrl || 'https://...'}
+                {couponsPublicUrl || 'https://…'}
               </span>
             </div>
 
@@ -261,7 +261,7 @@ function DashboardPage() {
           </div>
         )}
 
-        <form onSubmit={handleAddInterest} className="flex flex-col md:flex-row gap-3 items-center">
+        <form onSubmit={handleAddInterest} className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
           <input
             id="interest-term"
             name="term"
@@ -272,7 +272,7 @@ function DashboardPage() {
             required
             autoComplete="off"
             spellCheck={false}
-            className="flex-1 w-full h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
+            className="flex-1 w-full h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-base sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
           />
           <input
             id="interest-max-price"
@@ -284,14 +284,14 @@ function DashboardPage() {
             inputMode="decimal"
             autoComplete="off"
             spellCheck={false}
-            className="w-full md:w-56 h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors tabular-nums"
+            className="w-full sm:w-56 h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-base sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors tabular-nums"
           />
           <button
             type="submit"
             disabled={addInterestMutation.isPending}
-            className="w-full md:w-auto h-11 px-5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm rounded-lg transition-colors cursor-pointer disabled:opacity-50 whitespace-nowrap shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            className="w-full sm:w-auto h-11 px-5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm rounded-lg transition-colors cursor-pointer disabled:opacity-50 whitespace-nowrap shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           >
-            {addInterestMutation.isPending ? '...' : t.dashboard.addInterestButton}
+            {addInterestMutation.isPending ? '…' : t.dashboard.addInterestButton}
           </button>
         </form>
       </div>
@@ -299,84 +299,139 @@ function DashboardPage() {
       {/* Monitored Terms Section */}
       {isLoading ? (
         <div className="bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-400 font-medium">
-          ...
+          …
         </div>
       ) : !data || data.interests.length === 0 ? (
         <EmptyState type="interests" />
       ) : (
-        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
-          <h2 className="text-base font-bold text-slate-900 mb-4 select-none tabular-nums">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-6 shadow-xs">
+          <h2 className="text-base font-bold text-slate-900 mb-3 sm:mb-4 select-none tabular-nums">
             {t.dashboard.monitoredTermsTitle(data.interests.length)}
           </h2>
 
-          <div className="bg-slate-100 border border-slate-200 rounded-lg px-4 py-2.5 mb-2 flex items-center text-[11px] font-bold text-slate-600 uppercase tracking-wider select-none">
-            <span className="flex-1">{t.dashboard.termHeader}</span>
-            <span className="w-72 text-left hidden sm:inline-block">{t.dashboard.rulesHeader}</span>
-            <span className="w-36 text-center">{t.dashboard.targetPriceHeader}</span>
-            <span className="w-36 text-center hidden md:inline-block">{t.dashboard.lastAlertHeader}</span>
-            <span className="w-20 text-right">{t.dashboard.actionHeader}</span>
-          </div>
-
-          <div className="divide-y divide-slate-100">
+          {/* Mobile Card List (< md) */}
+          <div className="md:hidden divide-y divide-slate-100">
             {data.interests.map((item) => (
-              <div
-                key={item.id}
-                className="py-3.5 px-4 flex items-center hover:bg-slate-50/70 transition-colors rounded-lg"
-              >
-                <div className="flex-1 flex flex-col pr-4 min-w-0">
-                  <span className="text-sm font-semibold text-slate-900 truncate">
+              <div key={item.id} className="py-3 flex flex-col gap-2">
+                <div className="flex items-start justify-between gap-2">
+                  <span className="text-[13px] font-bold text-slate-900 truncate">
                     {item.rawTerm}
                   </span>
-                  {item.negativeTokens.length > 0 && (
-                    <span className="text-xs text-slate-500 sm:hidden">
-                      {item.negativeTokens.map((t) => `-${t}`).join(' ')}
-                    </span>
-                  )}
-                </div>
-
-                <div className="w-72 text-left hidden sm:flex items-center gap-1.5 flex-wrap">
-                  {item.negativeTokens.length > 0 ? (
-                    item.negativeTokens.map((neg) => (
-                      <span
-                        key={neg}
-                        className="bg-red-50 border border-red-200 text-red-700 text-[11px] font-medium px-2 py-0.5 rounded-md"
-                      >
-                        -{neg}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="text-xs text-slate-500 font-normal">
-                      {t.dashboard.freeTokensSynonyms}
-                    </span>
-                  )}
-                </div>
-
-                <div className="w-36 text-center">
                   <span
-                    className={`text-sm font-semibold tabular-nums ${
-                      item.maxPrice !== null ? 'text-emerald-700 font-bold' : 'text-slate-500 font-normal'
+                    className={`text-xs font-bold tabular-nums flex-shrink-0 ${
+                      item.maxPrice !== null ? 'text-emerald-700' : 'text-slate-500 font-normal'
                     }`}
                   >
                     {formatPrice(item.maxPrice)}
                   </span>
                 </div>
 
-                <div className="w-36 text-center hidden md:block text-xs text-slate-400 tabular-nums">
-                  {formatDate(item.createdAt)}
+                <div className="text-[11px] text-slate-500">
+                  {item.negativeTokens.length > 0 ? (
+                    <span className="flex items-center gap-1 flex-wrap">
+                      <span className="font-medium text-slate-600">Exclusão:</span>
+                      {item.negativeTokens.map((neg) => (
+                        <span
+                          key={neg}
+                          className="bg-red-50 border border-red-200 text-red-700 text-[10px] font-medium px-1.5 py-0.5 rounded"
+                        >
+                          -{neg}
+                        </span>
+                      ))}
+                    </span>
+                  ) : (
+                    <span className="text-slate-400">{t.dashboard.freeTokensSynonyms}</span>
+                  )}
                 </div>
 
-                <div className="w-20 text-right">
+                <div className="flex items-center justify-between pt-1">
+                  <span className="text-[11px] text-slate-400 tabular-nums">
+                    {formatDate(item.createdAt)}
+                  </span>
                   <button
                     type="button"
                     onClick={() => handleDelete(item.id)}
                     disabled={deleteInterestMutation.isPending}
-                    className="text-xs font-semibold text-red-600 hover:text-red-700 hover:underline cursor-pointer disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1 rounded-xs"
+                    className="h-9 px-3 bg-red-50 hover:bg-red-100 active:bg-red-200 text-red-700 text-xs font-semibold rounded-lg flex items-center justify-center transition-colors cursor-pointer disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                   >
                     {t.common.remove}
                   </button>
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Desktop Table (>= md) */}
+          <div className="hidden md:block">
+            <div className="bg-slate-100 border border-slate-200 rounded-lg px-4 py-2.5 mb-2 flex items-center text-[11px] font-bold text-slate-600 uppercase tracking-wider select-none">
+              <span className="flex-1">{t.dashboard.termHeader}</span>
+              <span className="w-72 text-left hidden sm:inline-block">{t.dashboard.rulesHeader}</span>
+              <span className="w-36 text-center">{t.dashboard.targetPriceHeader}</span>
+              <span className="w-36 text-center hidden md:inline-block">{t.dashboard.lastAlertHeader}</span>
+              <span className="w-20 text-right">{t.dashboard.actionHeader}</span>
+            </div>
+
+            <div className="divide-y divide-slate-100">
+              {data.interests.map((item) => (
+                <div
+                  key={item.id}
+                  className="py-3.5 px-4 flex items-center hover:bg-slate-50/70 transition-colors rounded-lg"
+                >
+                  <div className="flex-1 flex flex-col pr-4 min-w-0">
+                    <span className="text-sm font-semibold text-slate-900 truncate">
+                      {item.rawTerm}
+                    </span>
+                    {item.negativeTokens.length > 0 && (
+                      <span className="text-xs text-slate-500 sm:hidden">
+                        {item.negativeTokens.map((t) => `-${t}`).join(' ')}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="w-72 text-left hidden sm:flex items-center gap-1.5 flex-wrap">
+                    {item.negativeTokens.length > 0 ? (
+                      item.negativeTokens.map((neg) => (
+                        <span
+                          key={neg}
+                          className="bg-red-50 border border-red-200 text-red-700 text-[11px] font-medium px-2 py-0.5 rounded-md"
+                        >
+                          -{neg}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-xs text-slate-500 font-normal">
+                        {t.dashboard.freeTokensSynonyms}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="w-36 text-center">
+                    <span
+                      className={`text-sm font-semibold tabular-nums ${
+                        item.maxPrice !== null ? 'text-emerald-700 font-bold' : 'text-slate-500 font-normal'
+                      }`}
+                    >
+                      {formatPrice(item.maxPrice)}
+                    </span>
+                  </div>
+
+                  <div className="w-36 text-center hidden md:block text-xs text-slate-400 tabular-nums">
+                    {formatDate(item.createdAt)}
+                  </div>
+
+                  <div className="w-20 text-right">
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(item.id)}
+                      disabled={deleteInterestMutation.isPending}
+                      className="text-xs font-semibold text-red-600 hover:text-red-700 hover:underline cursor-pointer disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1 rounded-xs"
+                    >
+                      {t.common.remove}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}

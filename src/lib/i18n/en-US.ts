@@ -60,6 +60,15 @@ export const enUS: I18nDictionary = {
     myInterests: 'My Monitored Terms',
     offersFound: 'Offers Found',
   },
+  navShort: {
+    telegram: 'Telegram',
+    channels: 'Channels',
+    users: 'Users',
+    terms: 'Terms',
+    myTerms: 'My Terms',
+    offers: 'Offers',
+    offersFound: 'Offers Found',
+  },
   dashboard: {
     title: 'User Dashboard — Watchlist',
     notificationChannel: 'NOTIFICATIONS CHANNEL',

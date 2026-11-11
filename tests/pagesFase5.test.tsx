@@ -314,11 +314,11 @@ describe('Fase 5: Public and User Pages (Boards 1, 2, 3, 7)', () => {
       expect(screen.getByText('CANAL DE CUPONS')).toBeInTheDocument()
       expect(screen.getByText('promo/cupom')).toBeInTheDocument()
 
-      expect(screen.getByText('Nintendo Switch 2 -capa -pelicula')).toBeInTheDocument()
-      expect(screen.getByText('-capa')).toBeInTheDocument()
-      expect(screen.getByText('-pelicula')).toBeInTheDocument()
-      expect(screen.getByText('Até R$ 2.500,00')).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Remover' })).toBeInTheDocument()
+      expect(screen.getAllByText('Nintendo Switch 2 -capa -pelicula')[0]).toBeInTheDocument()
+      expect(screen.getAllByText('-capa')[0]).toBeInTheDocument()
+      expect(screen.getAllByText('-pelicula')[0]).toBeInTheDocument()
+      expect(screen.getAllByText('Até R$ 2.500,00')[0]).toBeInTheDocument()
+      expect(screen.getAllByRole('button', { name: 'Remover' })[0]).toBeInTheDocument()
     })
 
     it('renders EmptyState when interests array is empty', async () => {
@@ -368,8 +368,8 @@ describe('Fase 5: Public and User Pages (Boards 1, 2, 3, 7)', () => {
 
       await renderDashboard()
 
-      const removeBtn = await screen.findByRole('button', { name: 'Remover' })
-      fireEvent.click(removeBtn)
+      const removeBtns = await screen.findAllByRole('button', { name: 'Remover' })
+      fireEvent.click(removeBtns[0])
 
       await waitFor(() => {
         expect(deleteSpy).toHaveBeenCalledWith(1)
@@ -441,10 +441,10 @@ describe('Fase 5: Public and User Pages (Boards 1, 2, 3, 7)', () => {
       expect(screen.getByRole('tab', { name: 'Meus Produtos Encontrados (1)' })).toBeInTheDocument()
       expect(screen.getByRole('tab', { name: 'Cupons Encontrados (1)' })).toBeInTheDocument()
 
-      expect(screen.getByText('Console Nintendo Switch OLED em promoção imperdível!')).toBeInTheDocument()
-      expect(screen.getByText('R$ 1.999,00')).toBeInTheDocument()
-      const link = screen.getByRole('link', { name: 'Abrir Link' })
-      expect(link).toHaveAttribute('href', 'https://amzn.to/switch')
+      expect(screen.getAllByText('Console Nintendo Switch OLED em promoção imperdível!')[0]).toBeInTheDocument()
+      expect(screen.getAllByText('R$ 1.999,00')[0]).toBeInTheDocument()
+      const links = screen.getAllByRole('link', { name: 'Abrir Link' })
+      expect(links[0]).toHaveAttribute('href', 'https://amzn.to/switch')
     })
 
     it('switches to coupons tab when clicked and displays coupons table', async () => {
@@ -455,9 +455,9 @@ describe('Fase 5: Public and User Pages (Boards 1, 2, 3, 7)', () => {
       const couponsTab = await screen.findByRole('tab', { name: 'Cupons Encontrados (1)' })
       fireEvent.click(couponsTab)
 
-      expect(await screen.findByText('PROMO10OFF')).toBeInTheDocument()
-      expect(screen.getByText('Amazon')).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Copiar Cupom' })).toBeInTheDocument()
+      expect((await screen.findAllByText('PROMO10OFF'))[0]).toBeInTheDocument()
+      expect(screen.getAllByText('Amazon')[0]).toBeInTheDocument()
+      expect(screen.getAllByRole('button', { name: 'Copiar Cupom' })[0]).toBeInTheDocument()
     })
 
     it('renders EmptyState when products tab is empty', async () => {

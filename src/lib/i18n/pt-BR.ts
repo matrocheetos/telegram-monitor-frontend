@@ -60,6 +60,15 @@ export const ptBR: I18nDictionary = {
     myInterests: 'Meus Termos Monitorados',
     offersFound: 'Ofertas Encontradas',
   },
+  navShort: {
+    telegram: 'Telegram',
+    channels: 'Canais',
+    users: 'Usuários',
+    terms: 'Termos',
+    myTerms: 'Meus Termos',
+    offers: 'Ofertas',
+    offersFound: 'Ofertas Encontradas',
+  },
   dashboard: {
     title: 'Painel do Usuário — Lista de Interesse',
     notificationChannel: 'CANAL DE NOTIFICAÇÕES',

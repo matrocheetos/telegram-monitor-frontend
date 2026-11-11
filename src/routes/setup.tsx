@@ -69,16 +69,16 @@ function SetupPage() {
     <div className="min-h-screen bg-slate-900 flex flex-col justify-between items-center">
       <AuthTopBar isInitialSetup={true} />
 
-      <main className="w-full flex items-center justify-center p-6 flex-1">
-        <div className="w-full max-w-[480px] bg-white border border-slate-200 rounded-xl p-10 shadow-xl">
-          <h1 className="text-[26px] font-bold text-slate-900 tracking-tight mb-6 select-none">
+      <main className="w-full flex items-center justify-center p-4 sm:p-6 flex-1">
+        <div className="w-full max-w-[460px] bg-white border border-slate-200 rounded-xl p-6 sm:p-10 shadow-xl">
+          <h1 className="text-[22px] sm:text-[26px] font-bold text-slate-900 tracking-tight mb-5 sm:mb-6 select-none">
             {t.setup.title}
           </h1>
 
           {errorMessage && (
             <div
               role="alert"
-              className="mb-6 p-3 bg-red-50 border border-red-200 rounded-lg text-sm font-semibold text-red-600"
+              className="mb-5 sm:mb-6 p-3 bg-red-50 border border-red-200 rounded-lg text-sm font-semibold text-red-600"
             >
               {errorMessage}
             </div>
@@ -99,7 +99,7 @@ function SetupPage() {
                 required
                 autoComplete="username"
                 spellCheck={false}
-                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
+                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-base sm:text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
               />
             </div>
 
@@ -117,7 +117,7 @@ function SetupPage() {
                 required
                 minLength={8}
                 autoComplete="new-password"
-                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
+                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-base sm:text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
               />
             </div>
 
@@ -134,7 +134,7 @@ function SetupPage() {
                 placeholder="••••••••••••"
                 required
                 autoComplete="new-password"
-                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
+                className="h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-base sm:text-[15px] text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
               />
             </div>
 
@@ -143,7 +143,7 @@ function SetupPage() {
               disabled={setupMutation.isPending}
               className="mt-2 h-12 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-[15px] rounded-lg transition-colors cursor-pointer w-full disabled:opacity-50 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
-              {setupMutation.isPending ? '...' : t.setup.submit}
+              {setupMutation.isPending ? '…' : t.setup.submit}
             </button>
           </form>
         </div>

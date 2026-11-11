@@ -99,6 +99,41 @@ describe('Fase 6: Admin Exclusive Pages (Boards 4, 4b, 5, 6)', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }))
       expect(closeSpy).toHaveBeenCalled()
     })
+
+    it('calls onClose on Escape key press', () => {
+      const closeSpy = vi.fn()
+      render(
+        <I18nProvider initialLocale="pt-BR">
+          <ResetPasswordModal
+            isOpen={true}
+            username="joaosilva"
+            onClose={closeSpy}
+            onSubmit={vi.fn()}
+          />
+        </I18nProvider>,
+      )
+
+      fireEvent.keyDown(window, { key: 'Escape' })
+      expect(closeSpy).toHaveBeenCalledTimes(1)
+    })
+
+    it('calls onClose when clicking on backdrop', () => {
+      const closeSpy = vi.fn()
+      render(
+        <I18nProvider initialLocale="pt-BR">
+          <ResetPasswordModal
+            isOpen={true}
+            username="joaosilva"
+            onClose={closeSpy}
+            onSubmit={vi.fn()}
+          />
+        </I18nProvider>,
+      )
+
+      const backdrop = screen.getByRole('dialog')
+      fireEvent.click(backdrop)
+      expect(closeSpy).toHaveBeenCalledTimes(1)
+    })
   })
 
   describe('Task 6.1: Admin Telegram Page (/admin/telegram - Boards 4 & 4b)', () => {
@@ -309,23 +344,23 @@ describe('Fase 6: Admin Exclusive Pages (Boards 4, 4b, 5, 6)', () => {
       expect(screen.getByText('promo/user/admin')).toBeInTheDocument()
 
       // Channels rows
-      expect(screen.getByText('Promos Brasil VIP')).toBeInTheDocument()
+      expect(screen.getAllByText('Promos Brasil VIP')[0]).toBeInTheDocument()
       expect(screen.getAllByText('@promosbrasil')[0]).toBeInTheDocument()
-      expect(screen.getByText('Achados e Cupons BR')).toBeInTheDocument()
+      expect(screen.getAllByText('Achados e Cupons BR')[0]).toBeInTheDocument()
       expect(screen.getAllByText('@achadoscupons')[0]).toBeInTheDocument()
 
       // Buttons labels - strictly plain text without checkmarks/icons
       const monitorProdBtns = screen.getAllByRole('button', { name: 'Monitorar Produtos' })
-      expect(monitorProdBtns).toHaveLength(1) // channel 1001
+      expect(monitorProdBtns).toHaveLength(2) // channel 1001 (mobile + desktop)
 
       const ignoreProdBtns = screen.getAllByRole('button', { name: 'Ignorar Produtos' })
-      expect(ignoreProdBtns).toHaveLength(2) // channels 1002 and 1003
+      expect(ignoreProdBtns).toHaveLength(4) // channels 1002 and 1003 (mobile + desktop)
 
       const monitorCupomBtns = screen.getAllByRole('button', { name: 'Monitorar Cupom' })
-      expect(monitorCupomBtns).toHaveLength(1) // channel 1002
+      expect(monitorCupomBtns).toHaveLength(2) // channel 1002 (mobile + desktop)
 
       const ignoreCupomBtns = screen.getAllByRole('button', { name: 'Ignorar Cupom' })
-      expect(ignoreCupomBtns).toHaveLength(2) // channels 1001 and 1003
+      expect(ignoreCupomBtns).toHaveLength(4) // channels 1001 and 1003 (mobile + desktop)
     })
 
     it('toggles channels, enables Salvar Alterações button and submits updates', async () => {
@@ -337,7 +372,7 @@ describe('Fase 6: Admin Exclusive Pages (Boards 4, 4b, 5, 6)', () => {
 
       await renderChannelsPage()
 
-      await screen.findByText('Promos Brasil VIP')
+      await screen.findAllByText('Promos Brasil VIP')
 
       const saveBtn = screen.getByRole('button', { name: 'Salvar Alterações' })
       expect(saveBtn).toBeDisabled()
@@ -383,15 +418,15 @@ describe('Fase 6: Admin Exclusive Pages (Boards 4, 4b, 5, 6)', () => {
 
       await renderChannelsPage()
 
-      await screen.findByText('Promos Brasil VIP')
-      expect(screen.getByText('Achados e Cupons BR')).toBeInTheDocument()
+      await screen.findAllByText('Promos Brasil VIP')
+      expect(screen.getAllByText('Achados e Cupons BR')[0]).toBeInTheDocument()
 
       const searchInput = screen.getByPlaceholderText('Filtrar canais por nome ou @username…')
       fireEvent.change(searchInput, { target: { value: 'Tech' } })
 
       expect(screen.queryByText('Promos Brasil VIP')).not.toBeInTheDocument()
       expect(screen.queryByText('Achados e Cupons BR')).not.toBeInTheDocument()
-      expect(screen.getByText('Grupo de Descontos Tech')).toBeInTheDocument()
+      expect(screen.getAllByText('Grupo de Descontos Tech')[0]).toBeInTheDocument()
     })
 
     it('renders EmptyState when channel list is empty', async () => {
@@ -517,15 +552,15 @@ describe('Fase 6: Admin Exclusive Pages (Boards 4, 4b, 5, 6)', () => {
       expect(await screen.findByText('Usuários Cadastrados no Sistema (2)')).toBeInTheDocument()
 
       // Self admin row
-      expect(screen.getByText('@admin')).toBeInTheDocument()
-      expect(screen.getByText('ADMIN')).toBeInTheDocument()
-      expect(screen.getByText('Protegido')).toBeInTheDocument()
+      expect(screen.getAllByText('@admin')[0]).toBeInTheDocument()
+      expect(screen.getAllByText('ADMIN')[0]).toBeInTheDocument()
+      expect(screen.getAllByText('Protegido')[0]).toBeInTheDocument()
 
       // Other user row
-      expect(screen.getByText('@joaosilva')).toBeInTheDocument()
-      expect(screen.getByText('USER')).toBeInTheDocument()
-      expect(screen.getByText('5 termos ativos')).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Remover' })).toBeInTheDocument()
+      expect(screen.getAllByText('@joaosilva')[0]).toBeInTheDocument()
+      expect(screen.getAllByText('USER')[0]).toBeInTheDocument()
+      expect(screen.getAllByText('5 termos ativos')[0]).toBeInTheDocument()
+      expect(screen.getAllByRole('button', { name: 'Remover' })[0]).toBeInTheDocument()
     })
 
     it('deletes user after confirmation', async () => {
@@ -536,8 +571,8 @@ describe('Fase 6: Admin Exclusive Pages (Boards 4, 4b, 5, 6)', () => {
 
       await renderUsersPage()
 
-      const deleteBtn = await screen.findByRole('button', { name: 'Remover' })
-      fireEvent.click(deleteBtn)
+      const deleteBtns = await screen.findAllByRole('button', { name: 'Remover' })
+      fireEvent.click(deleteBtns[0])
 
       expect(window.confirm).toHaveBeenCalledWith(
         'Deseja realmente remover o usuário @joaosilva?',

@@ -104,25 +104,25 @@ function AdminTelegramPage() {
 
       {/* Session Status Banner (Board 4 Connected vs Board 4b Disconnected) */}
       {isConnected ? (
-        <div className="bg-white border-2 border-emerald-300 rounded-xl p-6 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="bg-white border-2 border-emerald-300 rounded-xl p-4 sm:p-6 shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
           <div className="flex flex-col">
             <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 uppercase tracking-wider select-none mb-1">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               {t.telegram.activeSession}
             </span>
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight tabular-nums">
+            <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight tabular-nums">
               {t.telegram.connectedAccount(status.phoneMasked)}
             </h2>
-            <span className="text-sm text-slate-600 mt-0.5 tabular-nums">
+            <span className="text-xs sm:text-sm text-slate-600 mt-0.5 tabular-nums">
               {t.telegram.syncedChannels(status.channelsCount)}
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
             <button
               type="button"
               onClick={() => navigate({ to: '/admin/channels' })}
-              className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-lg transition-colors cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+              className="h-11 sm:h-auto px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-lg transition-colors cursor-pointer select-none flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
             >
               {t.telegram.selectChannels}
             </button>
@@ -130,35 +130,35 @@ function AdminTelegramPage() {
               type="button"
               onClick={handleDisconnect}
               disabled={disconnectMutation.isPending}
-              className="px-4 py-2 bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 font-semibold text-xs rounded-lg transition-colors cursor-pointer disabled:opacity-50 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1"
+              className="h-11 sm:h-auto px-4 py-2 bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 font-semibold text-xs rounded-lg transition-colors cursor-pointer disabled:opacity-50 select-none flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1"
             >
-              {disconnectMutation.isPending ? '...' : t.telegram.disconnect}
+              {disconnectMutation.isPending ? '…' : t.telegram.disconnect}
             </button>
           </div>
         </div>
       ) : (
-        <div className="bg-amber-50/50 border-2 border-amber-300 rounded-xl p-6 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="bg-amber-50/50 border-2 border-amber-300 rounded-xl p-4 sm:p-6 shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
           <div className="flex flex-col">
             <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 uppercase tracking-wider select-none mb-1">
               <span className="w-2 h-2 rounded-full bg-amber-500" />
               {t.telegram.inactiveSession}
             </span>
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">
+            <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
               {t.telegram.noAccountConnected}
             </h2>
-            <span className="text-sm text-slate-600 mt-0.5 tabular-nums">
+            <span className="text-xs sm:text-sm text-slate-600 mt-0.5 tabular-nums">
               {t.telegram.syncedChannels(0)}
             </span>
           </div>
 
-          <span className="inline-flex items-center px-3 py-1.5 bg-amber-100 border border-amber-300 rounded-lg text-xs font-semibold text-amber-800 select-none">
+          <span className="inline-flex items-center justify-center px-3 py-2 bg-amber-100 border border-amber-300 rounded-lg text-xs font-semibold text-amber-800 select-none">
             {t.telegram.pendingAuth}
           </span>
         </div>
       )}
 
       {/* 2-Step MTProto Connection Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Step 1: Request OTP Code */}
         <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs flex flex-col justify-between">
           <div>
@@ -245,7 +245,7 @@ function AdminTelegramPage() {
               disabled={sendCodeMutation.isPending}
               className="w-full h-11 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm rounded-lg transition-colors cursor-pointer disabled:opacity-50 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
-              {sendCodeMutation.isPending ? '...' : t.telegram.sendOtp}
+              {sendCodeMutation.isPending ? '…' : t.telegram.sendOtp}
             </button>
           </div>
         </div>
@@ -329,7 +329,7 @@ function AdminTelegramPage() {
               disabled={!codeSent || verifyMutation.isPending}
               className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-semibold text-sm rounded-lg transition-colors cursor-pointer disabled:opacity-50 shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
             >
-              {verifyMutation.isPending ? '...' : t.telegram.connectAccount}
+              {verifyMutation.isPending ? '…' : t.telegram.connectAccount}
             </button>
           </div>
         </div>

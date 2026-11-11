@@ -90,17 +90,17 @@ function OffersPage() {
       )}
 
       {/* Tabs and Search Row */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-        {/* Tabs Group */}
-        <div className="inline-flex items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200" role="tablist">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4">
+        {/* Tabs Group: 2 columns on mobile, auto width on desktop */}
+        <div className="grid grid-cols-2 md:inline-flex md:items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200 w-full md:w-auto" role="tablist">
           <button
             type="button"
             role="tab"
             aria-selected={activeTab === 'products'}
             onClick={() => handleTabChange('products')}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer select-none tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
+            className={`h-11 md:h-auto px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors cursor-pointer select-none tabular-nums flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
               activeTab === 'products'
-                ? 'bg-blue-600 text-white shadow-xs'
+                ? 'bg-blue-600 text-white shadow-xs font-bold'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
             }`}
           >
@@ -111,9 +111,9 @@ function OffersPage() {
             role="tab"
             aria-selected={activeTab === 'coupons'}
             onClick={() => handleTabChange('coupons')}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer select-none tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
+            className={`h-11 md:h-auto px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors cursor-pointer select-none tabular-nums flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
               activeTab === 'coupons'
-                ? 'bg-blue-600 text-white shadow-xs'
+                ? 'bg-blue-600 text-white shadow-xs font-bold'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
             }`}
           >
@@ -133,7 +133,7 @@ function OffersPage() {
               placeholder={t.offers.searchPlaceholder}
               autoComplete="off"
               spellCheck={false}
-              className="w-full h-11 pl-4 pr-10 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors shadow-xs"
+              className="w-full h-11 pl-4 pr-10 bg-white border border-slate-300 rounded-lg text-base sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors shadow-xs"
             />
             {queryInput && (
               <button
@@ -155,136 +155,213 @@ function OffersPage() {
       {/* Content Area */}
       {isLoading ? (
         <div className="bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-400 font-medium">
-          ...
+          …
         </div>
       ) : activeTab === 'products' ? (
         !data || data.products.length === 0 ? (
           <EmptyState type="products" />
         ) : (
-          <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
-            <h2 className="text-base font-bold text-slate-900 mb-4 select-none">
+          <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-6 shadow-xs">
+            <h2 className="text-base font-bold text-slate-900 mb-3 sm:mb-4 select-none">
               {t.offers.productsTitle}
             </h2>
 
-            <div className="bg-slate-100 border border-slate-200 rounded-lg px-4 py-2.5 mb-2 flex items-center text-[11px] font-bold text-slate-600 uppercase tracking-wider select-none">
-              <span className="flex-1">{t.offers.colOffer}</span>
-              <span className="w-36 text-left hidden sm:inline-block">{t.offers.colTerm}</span>
-              <span className="w-36 text-left hidden md:inline-block">{t.common.channel}</span>
-              <span className="w-28 text-right">{t.offers.colPrice}</span>
-              <span className="w-32 text-center hidden lg:inline-block">{t.common.date}</span>
-              <span className="w-32 text-right">{t.common.action}</span>
-            </div>
-
-            <div className="divide-y divide-slate-100">
+            {/* Mobile Products Cards (< md) */}
+            <div className="md:hidden divide-y divide-slate-100">
               {data.products.map((item) => (
-                <div
-                  key={item.id}
-                  className="py-3.5 px-4 flex items-center hover:bg-slate-50/70 transition-colors rounded-lg gap-2"
-                >
-                  <div className="flex-1 min-w-0 pr-4">
-                    <p className="text-sm text-slate-900 font-medium line-clamp-2" title={item.messageText}>
-                      {item.messageText}
-                    </p>
-                  </div>
+                <div key={item.id} className="py-3 flex flex-col gap-2">
+                  <p className="text-xs sm:text-sm font-bold text-slate-900 line-clamp-2" title={item.messageText}>
+                    {item.messageText}
+                  </p>
 
-                  <div className="w-36 text-left hidden sm:block">
-                    <span className="inline-block bg-blue-50 border border-blue-200 text-blue-700 font-semibold text-xs px-2.5 py-0.5 rounded-md truncate max-w-full">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-sm font-bold text-emerald-700 whitespace-nowrap tabular-nums">
+                      {item.formattedPrice || (item.extractedPrice ? `R$ ${item.extractedPrice.toFixed(2)}` : '-')}
+                    </span>
+                    <span className="inline-block bg-blue-50 border border-blue-200 text-blue-700 font-semibold text-[10px] px-2 py-0.5 rounded-md truncate max-w-[200px]">
                       {item.interestTerm}
                     </span>
                   </div>
 
-                  <div className="w-36 text-left hidden md:block text-xs text-slate-600 font-normal truncate">
-                    {item.channelDisplay}
-                  </div>
-
-                  <div className="w-28 text-right">
-                    <span className="text-sm font-bold text-emerald-700 whitespace-nowrap tabular-nums">
-                      {item.formattedPrice || (item.extractedPrice ? `R$ ${item.extractedPrice.toFixed(2)}` : '-')}
+                  <div className="flex items-center justify-between pt-1">
+                    <span className="text-[11px] text-slate-400 tabular-nums truncate pr-2">
+                      {item.channelDisplay} · {formatDate(item.createdAt)}
                     </span>
-                  </div>
 
-                  <div className="w-32 text-center hidden lg:block text-xs text-slate-400 tabular-nums">
-                    {formatDate(item.createdAt)}
-                  </div>
-
-                  <div className="w-32 text-right">
                     {item.offerUrl ? (
                       <a
                         href={item.offerUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="h-10 px-3.5 inline-flex items-center justify-center text-xs font-bold text-blue-700 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-md transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+                        className="h-10 px-3.5 inline-flex items-center justify-center text-xs font-bold text-blue-700 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-md transition-colors cursor-pointer flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
                       >
                         {t.offers.openLink}
                       </a>
                     ) : (
-                      <span className="text-xs text-slate-400">-</span>
+                      <span className="text-xs text-slate-400 flex-shrink-0">-</span>
                     )}
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Desktop Products Table (>= md) */}
+            <div className="hidden md:block">
+              <div className="bg-slate-100 border border-slate-200 rounded-lg px-4 py-2.5 mb-2 flex items-center text-[11px] font-bold text-slate-600 uppercase tracking-wider select-none">
+                <span className="flex-1">{t.offers.colOffer}</span>
+                <span className="w-36 text-left hidden sm:inline-block">{t.offers.colTerm}</span>
+                <span className="w-36 text-left hidden md:inline-block">{t.common.channel}</span>
+                <span className="w-28 text-right">{t.offers.colPrice}</span>
+                <span className="w-32 text-center hidden lg:inline-block">{t.common.date}</span>
+                <span className="w-32 text-right">{t.common.action}</span>
+              </div>
+
+              <div className="divide-y divide-slate-100">
+                {data.products.map((item) => (
+                  <div
+                    key={item.id}
+                    className="py-3.5 px-4 flex items-center hover:bg-slate-50/70 transition-colors rounded-lg gap-2"
+                  >
+                    <div className="flex-1 min-w-0 pr-4">
+                      <p className="text-sm text-slate-900 font-medium line-clamp-2" title={item.messageText}>
+                        {item.messageText}
+                      </p>
+                    </div>
+
+                    <div className="w-36 text-left hidden sm:block">
+                      <span className="inline-block bg-blue-50 border border-blue-200 text-blue-700 font-semibold text-xs px-2.5 py-0.5 rounded-md truncate max-w-full">
+                        {item.interestTerm}
+                      </span>
+                    </div>
+
+                    <div className="w-36 text-left hidden md:block text-xs text-slate-600 font-normal truncate">
+                      {item.channelDisplay}
+                    </div>
+
+                    <div className="w-28 text-right">
+                      <span className="text-sm font-bold text-emerald-700 whitespace-nowrap tabular-nums">
+                        {item.formattedPrice || (item.extractedPrice ? `R$ ${item.extractedPrice.toFixed(2)}` : '-')}
+                      </span>
+                    </div>
+
+                    <div className="w-32 text-center hidden lg:block text-xs text-slate-400 tabular-nums">
+                      {formatDate(item.createdAt)}
+                    </div>
+
+                    <div className="w-32 text-right">
+                      {item.offerUrl ? (
+                        <a
+                          href={item.offerUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="h-10 px-3.5 inline-flex items-center justify-center text-xs font-bold text-blue-700 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-md transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+                        >
+                          {t.offers.openLink}
+                        </a>
+                      ) : (
+                        <span className="text-xs text-slate-400">-</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )
       ) : !data || data.coupons.length === 0 ? (
         <EmptyState type="coupons" />
       ) : (
-        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
-          <h2 className="text-base font-bold text-slate-900 mb-4 select-none">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-6 shadow-xs">
+          <h2 className="text-base font-bold text-slate-900 mb-3 sm:mb-4 select-none">
             {t.offers.couponsTitle}
           </h2>
 
-          <div className="bg-slate-100 border border-slate-200 rounded-lg px-4 py-2.5 mb-2 flex items-center text-[11px] font-bold text-slate-600 uppercase tracking-wider select-none">
-            <span className="w-48 text-left">{t.offers.colCouponCode}</span>
-            <span className="w-32 text-left hidden sm:inline-block">{t.common.store}</span>
-            <span className="flex-1 text-left hidden md:inline-block">{t.offers.colRuleMessage}</span>
-            <span className="w-36 text-left hidden lg:inline-block">{t.common.channel}</span>
-            <span className="w-32 text-center hidden xl:inline-block">{t.common.date}</span>
-            <span className="w-32 text-right">{t.common.action}</span>
-          </div>
-
-          <div className="divide-y divide-slate-100">
+          {/* Mobile Coupons Cards (< md) */}
+          <div className="md:hidden divide-y divide-slate-100">
             {data.coupons.map((item) => (
-              <div
-                key={item.id}
-                className="py-3.5 px-4 flex items-center hover:bg-slate-50/70 transition-colors rounded-lg gap-2"
-              >
-                <div className="w-48 text-left">
-                  <span className="inline-block bg-emerald-50 border border-emerald-300 text-emerald-800 font-mono font-bold text-xs px-2.5 py-1 rounded-md tracking-wider tabular-nums">
+              <div key={item.id} className="py-3 flex flex-col gap-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="inline-block bg-emerald-50 border border-emerald-300 text-emerald-800 font-mono font-bold text-xs sm:text-sm px-2.5 py-1 rounded-md tracking-wider tabular-nums">
                     {item.code}
                   </span>
-                </div>
-
-                <div className="w-32 text-left hidden sm:block">
                   <span className="text-xs font-bold text-slate-900 truncate">
                     {item.storeName || '-'}
                   </span>
                 </div>
 
-                <div className="flex-1 min-w-0 pr-4 hidden md:block">
-                  <p className="text-xs text-slate-600 truncate" title={item.messageText}>
-                    {item.messageText}
-                  </p>
-                </div>
+                <p className="text-xs text-slate-600 line-clamp-2" title={item.messageText}>
+                  {item.messageText}
+                </p>
 
-                <div className="w-36 text-left hidden lg:block text-xs text-slate-600 truncate">
-                  {item.channelDisplay}
-                </div>
-
-                <div className="w-32 text-center hidden xl:block text-xs text-slate-400 tabular-nums">
-                  {formatDate(item.createdAt)}
-                </div>
-
-                <div className="w-32 text-right">
+                <div className="flex items-center justify-between pt-1">
+                  <span className="text-[11px] text-slate-400 tabular-nums truncate pr-2">
+                    {item.channelDisplay} · {formatDate(item.createdAt)}
+                  </span>
                   <CopyButton
                     text={item.code}
                     label={t.common.copyCoupon}
                     variant="green"
-                    className="h-10 px-3.5 !text-xs rounded-md"
+                    className="h-10 px-3.5 !text-xs rounded-md flex-shrink-0"
                   />
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Desktop Coupons Table (>= md) */}
+          <div className="hidden md:block">
+            <div className="bg-slate-100 border border-slate-200 rounded-lg px-4 py-2.5 mb-2 flex items-center text-[11px] font-bold text-slate-600 uppercase tracking-wider select-none">
+              <span className="w-48 text-left">{t.offers.colCouponCode}</span>
+              <span className="w-32 text-left hidden sm:inline-block">{t.common.store}</span>
+              <span className="flex-1 text-left hidden md:inline-block">{t.offers.colRuleMessage}</span>
+              <span className="w-36 text-left hidden lg:inline-block">{t.common.channel}</span>
+              <span className="w-32 text-center hidden xl:inline-block">{t.common.date}</span>
+              <span className="w-32 text-right">{t.common.action}</span>
+            </div>
+
+            <div className="divide-y divide-slate-100">
+              {data.coupons.map((item) => (
+                <div
+                  key={item.id}
+                  className="py-3.5 px-4 flex items-center hover:bg-slate-50/70 transition-colors rounded-lg gap-2"
+                >
+                  <div className="w-48 text-left">
+                    <span className="inline-block bg-emerald-50 border border-emerald-300 text-emerald-800 font-mono font-bold text-xs px-2.5 py-1 rounded-md tracking-wider tabular-nums">
+                      {item.code}
+                    </span>
+                  </div>
+
+                  <div className="w-32 text-left hidden sm:block">
+                    <span className="text-xs font-bold text-slate-900 truncate">
+                      {item.storeName || '-'}
+                    </span>
+                  </div>
+
+                  <div className="flex-1 min-w-0 pr-4 hidden md:block">
+                    <p className="text-xs text-slate-600 truncate" title={item.messageText}>
+                      {item.messageText}
+                    </p>
+                  </div>
+
+                  <div className="w-36 text-left hidden lg:block text-xs text-slate-600 truncate">
+                    {item.channelDisplay}
+                  </div>
+
+                  <div className="w-32 text-center hidden xl:block text-xs text-slate-400 tabular-nums">
+                    {formatDate(item.createdAt)}
+                  </div>
+
+                  <div className="w-32 text-right">
+                    <CopyButton
+                      text={item.code}
+                      label={t.common.copyCoupon}
+                      variant="green"
+                      className="h-10 px-3.5 !text-xs rounded-md"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}

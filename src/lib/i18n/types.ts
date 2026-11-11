@@ -60,6 +60,15 @@ export interface I18nDictionary {
     myInterests: string
     offersFound: string
   }
+  navShort: {
+    telegram: string
+    channels: string
+    users: string
+    terms: string
+    myTerms: string
+    offers: string
+    offersFound: string
+  }
   dashboard: {
     title: string
     notificationChannel: string

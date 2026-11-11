@@ -156,9 +156,21 @@ describe('Fase 9: Ntfy Cards (Copy Topic + SVG i) and NtfyInfoModal', () => {
         screen.getByRole('heading', { name: 'Como receber alertas dos seus produtos no ntfy' }),
       ).toBeInTheDocument()
 
-      // Step 1 app store links
-      expect(screen.getByText(/Google Play/i)).toBeInTheDocument()
-      expect(screen.getByText(/App Store/i)).toBeInTheDocument()
+      // Step 1 app store links with exact URLs and security attributes
+      const androidLink = screen.getByRole('link', { name: /Google Play/i })
+      expect(androidLink).toBeInTheDocument()
+      expect(androidLink).toHaveAttribute(
+        'href',
+        'https://play.google.com/store/apps/details?id=io.heckel.ntfy',
+      )
+      expect(androidLink).toHaveAttribute('target', '_blank')
+      expect(androidLink).toHaveAttribute('rel', 'noopener noreferrer')
+
+      const iosLink = screen.getByRole('link', { name: /App Store/i })
+      expect(iosLink).toBeInTheDocument()
+      expect(iosLink).toHaveAttribute('href', 'https://apps.apple.com/app/ntfy/id1625396347')
+      expect(iosLink).toHaveAttribute('target', '_blank')
+      expect(iosLink).toHaveAttribute('rel', 'noopener noreferrer')
 
       // Cross-channel recommendation for coupons
       expect(screen.getByText(/adicione também o canal público de cupons/i)).toBeInTheDocument()
