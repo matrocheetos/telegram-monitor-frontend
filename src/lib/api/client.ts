@@ -247,6 +247,13 @@ export const apiClient = {
     })
   },
 
+  async getUserInterests(userId: number, signal?: AbortSignal): Promise<UserInterestDTO[]> {
+    return request<UserInterestDTO[]>(`/api/v1/admin/users/${userId}/interests`, {
+      method: 'GET',
+      signal,
+    })
+  },
+
   async createUser(data: CreateUserRequest): Promise<AdminUserDTO> {
     return request<AdminUserDTO>('/api/v1/admin/users', {
       method: 'POST',

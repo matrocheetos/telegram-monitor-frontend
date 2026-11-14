@@ -131,6 +131,25 @@ function AdminChannelsPage() {
     syncChannelsMutation.mutate()
   }
 
+  const renderSaveButton = (layoutClass: string) => (
+    <button
+      type="button"
+      onClick={handleSaveChanges}
+      disabled={!hasChanges || updateChannelsMutation.isPending}
+      className={`h-11 sm:h-10 font-bold text-xs rounded-lg transition-colors cursor-pointer select-none shadow-xs flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${layoutClass} ${
+        hasChanges
+          ? 'bg-blue-600 hover:bg-blue-700 text-white'
+          : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'
+      }`}
+    >
+      {updateChannelsMutation.isPending
+        ? '…'
+        : saveSuccess
+          ? t.common.saveChanges + ' ✓'
+          : t.channels.saveButton}
+    </button>
+  )
+
   return (
     <div className="max-w-6xl mx-auto flex flex-col gap-6">
       <PageHeader title={t.channels.title} />
@@ -220,22 +239,7 @@ function AdminChannelsPage() {
                 {syncChannelsMutation.isPending ? '…' : t.channels.syncButton}
               </button>
 
-              <button
-                type="button"
-                onClick={handleSaveChanges}
-                disabled={!hasChanges || updateChannelsMutation.isPending}
-                className={`h-11 sm:h-10 px-3 sm:px-4 font-bold text-xs rounded-lg transition-colors cursor-pointer select-none shadow-xs flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
-                  hasChanges
-                    ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                    : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'
-                }`}
-              >
-                {updateChannelsMutation.isPending
-                  ? '…'
-                  : saveSuccess
-                    ? t.common.saveChanges + ' ✓'
-                    : t.channels.saveButton}
-              </button>
+              {renderSaveButton('px-3 sm:px-4')}
             </div>
           </div>
 
@@ -359,6 +363,12 @@ function AdminChannelsPage() {
               })}
             </div>
           </div>
+
+          {filteredChannels.length > 0 && (
+            <div className="pt-4 border-t border-slate-100 flex items-center justify-end">
+              {renderSaveButton('w-full sm:w-auto px-4')}
+            </div>
+          )}
         </div>
       )}
     </div>

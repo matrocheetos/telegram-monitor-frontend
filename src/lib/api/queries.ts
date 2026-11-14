@@ -66,6 +66,7 @@ export function useAddInterestMutation() {
     mutationFn: (data: CreateInterestRequest) => apiClient.addInterest(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] })
     },
   })
 }
@@ -76,6 +77,7 @@ export function useDeleteInterestMutation() {
     mutationFn: (id: number) => apiClient.deleteInterest(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] })
     },
   })
 }
@@ -103,6 +105,11 @@ export const adminQueries = {
     queryOptions({
       queryKey: ['admin', 'users'],
       queryFn: ({ signal }) => apiClient.getUsers(signal),
+    }),
+  userInterests: (userId: number) =>
+    queryOptions({
+      queryKey: ['admin', 'users', userId, 'interests'],
+      queryFn: ({ signal }) => apiClient.getUserInterests(userId, signal),
     }),
 }
 

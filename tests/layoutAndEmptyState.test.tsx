@@ -175,7 +175,7 @@ describe('Layout and Empty State Components (Penpot Boards 1–8)', () => {
 
       expect(screen.getByText('Seus Termos Monitorados (0 ativos)')).toBeInTheDocument()
       expect(screen.getByText('TERMO DE INTERESSE')).toBeInTheDocument()
-      expect(screen.getByText('REGRAS & EXCLUSÕES')).toBeInTheDocument()
+      expect(screen.getByText('EXCLUSÕES')).toBeInTheDocument()
       expect(screen.getByText('PREÇO ALVO')).toBeInTheDocument()
       expect(screen.getByText('AÇÃO')).toBeInTheDocument()
       expect(screen.getByText('Nenhum termo monitorado cadastrado.')).toBeInTheDocument()
@@ -233,7 +233,7 @@ describe('Layout and Empty State Components (Penpot Boards 1–8)', () => {
 
       expect(screen.getByText('Your Monitored Terms (0 active)')).toBeInTheDocument()
       expect(screen.getByText('TERM OF INTEREST')).toBeInTheDocument()
-      expect(screen.getByText('RULES & EXCLUSIONS')).toBeInTheDocument()
+      expect(screen.getByText('EXCLUSIONS')).toBeInTheDocument()
       expect(screen.getByText('TARGET PRICE')).toBeInTheDocument()
       expect(screen.getByText('ACTION')).toBeInTheDocument()
       expect(screen.getByText('No monitored terms registered.')).toBeInTheDocument()

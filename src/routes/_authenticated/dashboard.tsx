@@ -329,7 +329,7 @@ function DashboardPage() {
                 <div className="text-[11px] text-slate-500">
                   {item.negativeTokens.length > 0 ? (
                     <span className="flex items-center gap-1 flex-wrap">
-                      <span className="font-medium text-slate-600">Exclusão:</span>
+                      <span className="font-medium text-slate-600">{t.dashboard.exclusionLabel}</span>
                       {item.negativeTokens.map((neg) => (
                         <span
                           key={neg}

@@ -34,6 +34,7 @@ export interface I18nDictionary {
     badgeAdmin: string
     badgeUser: string
     protected: string
+    close: string
   }
   setup: {
     title: string
@@ -85,6 +86,7 @@ export interface I18nDictionary {
     actionHeader: string
     noLimit: string
     upTo: (price: string) => string
+    exclusionLabel: string
     freeTokensSynonyms: string
     freeTokensExclusion: string
     freeTokensAccentCase: string
@@ -151,6 +153,12 @@ export interface I18nDictionary {
     colPublicChannel: string
     colActiveTerms: string
     termsActiveCount: (count: number) => string
+    viewTermsAria: (username: string, count: number) => string
+    activeTermsModalBadge: string
+    activeTermsModalTitle: (username: string, count: number) => string
+    activeTermsEmpty: string
+    colCreatedAt: string
+    createdAtLabel: (date: string) => string
     resetPassword: string
     deleteUser: string
     deleteUserConfirm: (username: string) => string

@@ -11,6 +11,7 @@ import {
 } from '../../../lib/api/queries'
 import { PageHeader } from '../../../components/layout/PageHeader'
 import { ResetPasswordModal } from '../../../components/ui/ResetPasswordModal'
+import { UserActiveTermsModal } from '../../../components/ui/UserActiveTermsModal'
 import { useI18n } from '../../../lib/i18n'
 import { ApiError } from '../../../lib/api/client'
 import type { AdminUserDTO, UserRole } from '../../../lib/api/types'
@@ -37,6 +38,9 @@ function AdminUsersPage() {
   // Reset password modal state
   const [targetUser, setTargetUser] = useState<AdminUserDTO | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  // Active terms inspection modal state
+  const [selectedUserForTerms, setSelectedUserForTerms] = useState<AdminUserDTO | null>(null)
 
   const currentUserId = session?.user?.id
 
@@ -228,9 +232,14 @@ function AdminUsersPage() {
                     <span className="font-mono text-slate-500 truncate" title={user.ntfyTopic}>
                       {user.normalizedNtfyTopic || user.ntfyTopic}
                     </span>
-                    <span className="font-semibold text-emerald-700 tabular-nums flex-shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedUserForTerms(user)}
+                      aria-label={t.users.viewTermsAria(user.username, user.activeInterestsCount)}
+                      className="inline-flex items-center justify-center px-3 py-1.5 rounded-lg text-xs font-bold tabular-nums bg-emerald-50 hover:bg-emerald-100 active:bg-emerald-200 text-emerald-800 border border-emerald-300 transition-colors cursor-pointer flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
+                    >
                       {t.users.termsActiveCount(user.activeInterestsCount)}
-                    </span>
+                    </button>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 mt-1">
@@ -309,9 +318,14 @@ function AdminUsersPage() {
                     </div>
 
                     <div className="w-40 text-center hidden md:block">
-                      <span className="text-xs font-semibold text-emerald-700 tabular-nums">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedUserForTerms(user)}
+                        aria-label={t.users.viewTermsAria(user.username, user.activeInterestsCount)}
+                        className="inline-flex items-center justify-center px-3 py-1.5 rounded-lg text-xs font-bold tabular-nums bg-emerald-50 hover:bg-emerald-100 active:bg-emerald-200 text-emerald-800 border border-emerald-300 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
+                      >
                         {t.users.termsActiveCount(user.activeInterestsCount)}
-                      </span>
+                      </button>
                     </div>
 
                     <div className="w-52 text-right flex items-center justify-end gap-2">
@@ -359,6 +373,13 @@ function AdminUsersPage() {
           isPending={resetPasswordMutation.isPending}
         />
       )}
+
+      {/* User Active Terms Modal */}
+      <UserActiveTermsModal
+        isOpen={selectedUserForTerms !== null}
+        user={selectedUserForTerms}
+        onClose={() => setSelectedUserForTerms(null)}
+      />
     </div>
   )
 }

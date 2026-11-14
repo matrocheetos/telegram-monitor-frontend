@@ -374,16 +374,17 @@ describe('Fase 6: Admin Exclusive Pages (Boards 4, 4b, 5, 6)', () => {
 
       await screen.findAllByText('Promos Brasil VIP')
 
-      const saveBtn = screen.getByRole('button', { name: 'Salvar Alterações' })
-      expect(saveBtn).toBeDisabled()
+      const saveBtns = screen.getAllByRole('button', { name: 'Salvar Alterações' })
+      expect(saveBtns).toHaveLength(2)
+      saveBtns.forEach((btn) => expect(btn).toBeDisabled())
 
       // Toggle channel 1003 to monitor products
       const ignoreProdBtns = screen.getAllByRole('button', { name: 'Ignorar Produtos' })
       fireEvent.click(ignoreProdBtns[1]) // channel 1003
 
-      // Now saveBtn should be enabled
-      expect(saveBtn).toBeEnabled()
-      fireEvent.click(saveBtn)
+      // Both top and bottom save buttons should now be enabled
+      saveBtns.forEach((btn) => expect(btn).toBeEnabled())
+      fireEvent.click(saveBtns[0])
 
       await waitFor(() => {
         expect(updateSpy).toHaveBeenCalledWith({
