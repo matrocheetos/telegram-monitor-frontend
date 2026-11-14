@@ -131,7 +131,7 @@ describe('Fase 10: Mobile Responsiveness (Boards 1 to 8 - Mobile)', () => {
       await renderWithSession(mockUserSession)
 
       // Mobile App Header brand info
-      expect(screen.getAllByText('TELEGRAM MONITOR')[0]).toBeInTheDocument()
+      expect(screen.getAllByText('Monitor de Promos')[0]).toBeInTheDocument()
       expect(screen.getAllByText('User Control Center')[0]).toBeInTheDocument()
 
       // Mobile hamburger button with accessible label

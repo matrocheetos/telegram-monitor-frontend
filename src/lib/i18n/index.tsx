@@ -63,6 +63,7 @@ export function I18nProvider({
 
   useEffect(() => {
     document.documentElement.lang = locale
+    document.title = dictionaries[locale].common.appName
   }, [locale])
 
   const t = useMemo(() => dictionaries[locale], [locale])

@@ -2,8 +2,8 @@ import type { I18nDictionary } from './types'
 
 export const ptBR: I18nDictionary = {
   common: {
-    appName: 'TELEGRAM MONITOR',
-    initialSetupBrand: 'TELEGRAM MONITOR · INITIAL SETUP',
+    appName: 'Monitor de Promos',
+    initialSetupBrand: 'Monitor de Promos · Initial Setup',
     userControlCenter: 'User Control Center',
     adminControlCenter: 'Admin Control Center',
     connectedAs: 'Conectado como: ',

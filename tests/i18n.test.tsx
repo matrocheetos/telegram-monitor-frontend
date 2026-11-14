@@ -46,9 +46,10 @@ describe('I18n System', () => {
     const { result } = renderHook(() => useI18n(), { wrapper })
 
     expect(result.current.locale).toBe('pt-BR')
-    expect(result.current.t.common.appName).toBe('TELEGRAM MONITOR')
+    expect(result.current.t.common.appName).toBe('Monitor de Promos')
     expect(result.current.t.login.submit).toBe('Login')
     expect(document.documentElement.lang).toBe('pt-BR')
+    expect(document.title).toBe('Monitor de Promos')
 
     act(() => {
       result.current.setLocale('en-US')

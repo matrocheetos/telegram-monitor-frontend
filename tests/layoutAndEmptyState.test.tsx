@@ -73,7 +73,7 @@ describe('Layout and Empty State Components (Penpot Boards 1–8)', () => {
     it('renders default app brand and dark language switcher for Login', () => {
       renderWithProviders(<AuthTopBar />)
 
-      expect(screen.getByText('TELEGRAM MONITOR')).toBeInTheDocument()
+      expect(screen.getByText('Monitor de Promos')).toBeInTheDocument()
       expect(screen.getByRole('group', { name: /Language selection/i })).toBeInTheDocument()
       expect(screen.getByRole('button', { name: 'PT' })).toBeInTheDocument()
       expect(screen.getByRole('button', { name: 'EN' })).toBeInTheDocument()
@@ -82,7 +82,7 @@ describe('Layout and Empty State Components (Penpot Boards 1–8)', () => {
     it('renders initial setup brand when isInitialSetup is true', () => {
       renderWithProviders(<AuthTopBar isInitialSetup={true} />)
 
-      expect(screen.getByText('TELEGRAM MONITOR · INITIAL SETUP')).toBeInTheDocument()
+      expect(screen.getByText('Monitor de Promos · Initial Setup')).toBeInTheDocument()
     })
 
     it('renders custom brand label when explicitly provided', () => {
@@ -121,7 +121,7 @@ describe('Layout and Empty State Components (Penpot Boards 1–8)', () => {
     it('renders user sidebar with User Control Center and exactly 2 nav links for role=user', async () => {
       await renderSidebarWithRouter('user', 'mateus')
 
-      expect(screen.getByText('TELEGRAM MONITOR')).toBeInTheDocument()
+      expect(screen.getByText('Monitor de Promos')).toBeInTheDocument()
       expect(screen.getByText('User Control Center')).toBeInTheDocument()
       expect(screen.getByText('Conectado como: mateus')).toBeInTheDocument()
       expect(screen.getByText('Role: user')).toBeInTheDocument()
@@ -137,7 +137,7 @@ describe('Layout and Empty State Components (Penpot Boards 1–8)', () => {
     it('renders admin sidebar with Admin Control Center and all 5 nav links for role=admin', async () => {
       await renderSidebarWithRouter('admin', 'adminuser')
 
-      expect(screen.getByText('TELEGRAM MONITOR')).toBeInTheDocument()
+      expect(screen.getByText('Monitor de Promos')).toBeInTheDocument()
       expect(screen.getByText('Admin Control Center')).toBeInTheDocument()
       expect(screen.getByText('Conectado como: adminuser')).toBeInTheDocument()
       expect(screen.getByText('Role: admin')).toBeInTheDocument()

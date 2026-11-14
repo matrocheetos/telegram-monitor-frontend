@@ -2,8 +2,8 @@ import type { I18nDictionary } from './types'
 
 export const enUS: I18nDictionary = {
   common: {
-    appName: 'TELEGRAM MONITOR',
-    initialSetupBrand: 'TELEGRAM MONITOR · INITIAL SETUP',
+    appName: 'Deal Monitor',
+    initialSetupBrand: 'Deal Monitor · Initial Setup',
     userControlCenter: 'User Control Center',
     adminControlCenter: 'Admin Control Center',
     connectedAs: 'Logged in as: ',
