@@ -140,28 +140,47 @@ describe('Fase 10: Mobile Responsiveness (Boards 1 to 8 - Mobile)', () => {
       expect(menuBtn.querySelector('svg')).not.toBeNull()
     })
 
-    it('renders Mobile Navigation Bar with user pills (Meus Termos & Ofertas Encontradas) and quick logout', async () => {
+    it('renders Mobile Navigation Bar with scrollable pills, subtle divider and SVG logout icon', async () => {
       await renderWithSession(mockUserSession)
 
       const navBar = screen.getByLabelText('Mobile quick navigation')
       expect(navBar).toBeInTheDocument()
+      expect(navBar.className).not.toContain('overflow-x-auto')
+
+      const pillsWrapper = navBar.firstElementChild as HTMLElement
+      expect(pillsWrapper).not.toBeNull()
+      expect(pillsWrapper.className).toContain('overflow-x-auto')
+      expect(pillsWrapper.className).toContain('no-scrollbar')
+
+      const divider = navBar.querySelector('[aria-hidden="true"]')
+      expect(divider).not.toBeNull()
+      expect(divider?.className).toContain('w-px')
 
       expect(within(navBar).getByRole('link', { name: 'Meus Termos' })).toBeInTheDocument()
       expect(within(navBar).getByRole('link', { name: 'Ofertas Encontradas' })).toBeInTheDocument()
-      expect(within(navBar).getByRole('button', { name: 'Encerrar Sessão' })).toBeInTheDocument()
+
+      const logoutBtn = within(navBar).getByRole('button', { name: 'Encerrar Sessão' })
+      expect(logoutBtn).toBeInTheDocument()
+      expect(logoutBtn.querySelector('svg')).not.toBeNull()
+      expect(logoutBtn.textContent).toBe('')
     })
 
-    it('renders Mobile Navigation Bar with admin pills (Telegram, Canais, Usuários, Termos, Ofertas)', async () => {
+    it('renders Mobile Navigation Bar with admin scrollable pills (Telegram, Canais, Usuários, Termos, Ofertas)', async () => {
       await renderWithSession(mockAdminSession)
 
       expect(screen.getAllByText('Admin Control Center')[0]).toBeInTheDocument()
 
       const navBar = screen.getByLabelText('Mobile quick navigation')
+      const pillsWrapper = navBar.firstElementChild as HTMLElement
+      expect(pillsWrapper.className).toContain('overflow-x-auto')
       expect(within(navBar).getByRole('link', { name: 'Telegram' })).toBeInTheDocument()
       expect(within(navBar).getByRole('link', { name: 'Canais' })).toBeInTheDocument()
       expect(within(navBar).getByRole('link', { name: 'Usuários' })).toBeInTheDocument()
       expect(within(navBar).getByRole('link', { name: 'Termos' })).toBeInTheDocument()
       expect(within(navBar).getByRole('link', { name: 'Ofertas' })).toBeInTheDocument()
+
+      const logoutBtn = within(navBar).getByRole('button', { name: 'Encerrar Sessão' })
+      expect(logoutBtn.querySelector('svg')).not.toBeNull()
     })
 
     it('opens slide-over mobile drawer when hamburger button is clicked and closes on Escape', async () => {

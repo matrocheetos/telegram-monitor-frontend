@@ -1,6 +1,7 @@
 import { queryOptions, useMutation, useQueryClient } from '@tanstack/react-query'
-import { apiClient } from './client'
+import { apiClient, getCsrfToken, setCsrfToken } from './client'
 import type {
+  SessionResponse,
   SetupRequest,
   LoginRequest,
   CreateInterestRequest,
@@ -24,8 +25,17 @@ export function useLoginMutation() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: LoginRequest) => apiClient.login(data),
-    onSuccess: (session) => {
-      queryClient.setQueryData(['auth', 'session'], session)
+    onSuccess: (res) => {
+      if (res.csrfToken) {
+        setCsrfToken(res.csrfToken)
+      }
+      queryClient.setQueryData<SessionResponse>(['auth', 'session'], {
+        needsInitialSetup: false,
+        authenticated: res.authenticated,
+        csrfToken: res.csrfToken ?? getCsrfToken() ?? '',
+        user: res.user,
+        telegram: res.telegram,
+      })
       queryClient.invalidateQueries({ queryKey: ['auth', 'session'] })
     },
   })
@@ -36,6 +46,7 @@ export function useLogoutMutation() {
   return useMutation({
     mutationFn: () => apiClient.logout(),
     onSuccess: () => {
+      setCsrfToken(null)
       queryClient.clear()
     },
   })
@@ -46,7 +57,10 @@ export function useSetupMutation() {
   return useMutation({
     mutationFn: (data: SetupRequest) => apiClient.setup(data),
     onSuccess: (session) => {
-      queryClient.setQueryData(['auth', 'session'], session)
+      if (session.csrfToken) {
+        setCsrfToken(session.csrfToken)
+      }
+      queryClient.setQueryData<SessionResponse>(['auth', 'session'], session)
       queryClient.invalidateQueries({ queryKey: ['auth', 'session'] })
     },
   })

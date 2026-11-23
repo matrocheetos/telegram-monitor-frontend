@@ -61,3 +61,12 @@
   --text-2xl-alt: 26px;
   --text-3xl: 28px;
 }
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

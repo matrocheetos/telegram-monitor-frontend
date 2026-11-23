@@ -12,6 +12,8 @@ export interface I18nDictionary {
     logout: string
     copied: string
     copyUrl: string
+    copyServerUrl: string
+    serverUrlCopied: string
     copyTopic: string
     copyCoupon: string
     topicCopied: string
@@ -74,9 +76,15 @@ export interface I18nDictionary {
     title: string
     notificationChannel: string
     couponsChannel: string
+    serverLabel: string
     addInterestTitle: string
+    termFieldLabel: string
     termPlaceholder: string
+    exclusionsFieldLabel: string
+    exclusionsPlaceholder: string
+    maxPriceFieldLabel: string
     maxPricePlaceholder: string
+    currencyPrefix: string
     addInterestButton: string
     monitoredTermsTitle: (count: number) => string
     termHeader: string
@@ -218,12 +226,13 @@ export interface I18nDictionary {
     iosBtn: string
     iosUrl: string
     step2Title: string
-    step2Item1: string
-    step2Item2Product: (topic: string) => string
-    step2Item2Coupon: (topic: string) => string
-    step2Item3: (url: string) => string
-    step2Item4Product: (couponTopic: string) => string
-    step2Item4Coupon: (userTopic: string) => string
+    serverWarning: string
+    optionATitle: string
+    optionAStep1: string
+    optionAStep2: (topic: string, otherTopic: string) => string
+    optionBTitle: string
+    optionBDesc: (topic: string, otherTopic: string) => string
+    serverLabel: (url: string) => string
     topicLabel: (topic: string) => string
     alsoAvailableCoupon: (topic: string) => string
     alsoAvailableProduct: (topic: string) => string

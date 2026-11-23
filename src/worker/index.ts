@@ -30,7 +30,7 @@ export default {
         const responseHeaders = new Headers(backendResponse.headers)
         if (typeof backendResponse.headers.getSetCookie === 'function') {
           const cookies = backendResponse.headers.getSetCookie()
-          if (cookies.length > 1) {
+          if (cookies.length > 0) {
             responseHeaders.delete('set-cookie')
             for (const cookie of cookies) {
               responseHeaders.append('set-cookie', cookie)

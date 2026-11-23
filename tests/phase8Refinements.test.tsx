@@ -91,6 +91,8 @@ describe('Fase 8: Refinamentos de web-design-guidelines e Internacionalização'
     it('contains all required Phase 2 translation keys in pt-BR', () => {
       expect(ptBR.common.copyTopic).toBe('Copiar Tópico')
       expect(ptBR.common.topicCopied).toBe('Tópico Copiado!')
+      expect(ptBR.common.copyServerUrl).toBe('Copiar URL do Servidor')
+      expect(ptBR.common.serverUrlCopied).toBe('Servidor Copiado!')
       expect(ptBR.common.openStore).toBe('Abrir Loja ↗')
       expect(ptBR.aria.ntfyInfoButton).toBe('Como configurar notificações no ntfy')
       expect(ptBR.aria.mobileMenuButton).toBe('Abrir menu de navegação')
@@ -105,6 +107,8 @@ describe('Fase 8: Refinamentos de web-design-guidelines e Internacionalização'
     it('contains all required Phase 2 translation keys in en-US', () => {
       expect(enUS.common.copyTopic).toBe('Copy Topic')
       expect(enUS.common.topicCopied).toBe('Topic Copied!')
+      expect(enUS.common.copyServerUrl).toBe('Copy Server URL')
+      expect(enUS.common.serverUrlCopied).toBe('Server Copied!')
       expect(enUS.common.openStore).toBe('Open Store ↗')
       expect(enUS.aria.ntfyInfoButton).toBe('How to set up ntfy notifications')
       expect(enUS.aria.mobileMenuButton).toBe('Open navigation menu')
@@ -118,6 +122,7 @@ describe('Fase 8: Refinamentos de web-design-guidelines e Internacionalização'
 
     it('contains typographical ellipsis (…) in all required placeholders', () => {
       expect(ptBR.dashboard.termPlaceholder).toContain('…')
+      expect(ptBR.dashboard.exclusionsPlaceholder).toContain('…')
       expect(ptBR.dashboard.maxPricePlaceholder).toContain('…')
       expect(ptBR.telegram.apiIdPlaceholder).toContain('…')
       expect(ptBR.telegram.apiHashPlaceholder).toContain('…')
@@ -125,6 +130,7 @@ describe('Fase 8: Refinamentos de web-design-guidelines e Internacionalização'
       expect(ptBR.offers.searchPlaceholder).toContain('…')
 
       expect(enUS.dashboard.termPlaceholder).toContain('…')
+      expect(enUS.dashboard.exclusionsPlaceholder).toContain('…')
       expect(enUS.dashboard.maxPricePlaceholder).toContain('…')
       expect(enUS.telegram.apiIdPlaceholder).toContain('…')
       expect(enUS.telegram.apiHashPlaceholder).toContain('…')

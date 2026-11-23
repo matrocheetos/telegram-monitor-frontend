@@ -333,13 +333,13 @@ describe('Fase 5: Public and User Pages (Boards 1, 2, 3, 7)', () => {
       expect(screen.getByText('Nenhum termo monitorado cadastrado.')).toBeInTheDocument()
     })
 
-    it('submits new interest', async () => {
+    it('submits new interest with separate excluded terms field and labeled inputs', async () => {
       vi.spyOn(apiClient, 'getDashboard').mockResolvedValue(mockDashboardData)
       const addSpy = vi.spyOn(apiClient, 'addInterest').mockResolvedValueOnce({
         id: 2,
         rawTerm: 'RTX 4060',
         positiveTokens: ['rtx', '4060'],
-        negativeTokens: [],
+        negativeTokens: ['ti', 'usada'],
         maxPrice: 1800,
         active: true,
         createdAt: '2026-11-10T00:00:00Z',
@@ -349,16 +349,26 @@ describe('Fase 5: Public and User Pages (Boards 1, 2, 3, 7)', () => {
 
       await screen.findByText('Painel do Usuário — Lista de Interesse')
 
-      const termInput = screen.getByPlaceholderText('Ex: switch 2 -capa -pelicula…')
-      const priceInput = screen.getByPlaceholderText('Ex: 2800,00…')
+      const termInput = screen.getByLabelText(/Produto ou Termo/)
+      const exclusionsInput = screen.getByLabelText('Termos Excluídos (Opcional)')
+      const priceInput = screen.getByLabelText('Preço Máximo (Opcional)')
       const submitBtn = screen.getByRole('button', { name: '+ Adicionar Interesse' })
 
+      expect(termInput).toHaveClass('h-11')
+      expect(termInput.className).not.toContain('flex-1')
+      expect(exclusionsInput).toHaveClass('h-11')
+
       fireEvent.change(termInput, { target: { value: 'RTX 4060' } })
+      fireEvent.change(exclusionsInput, { target: { value: 'ti, usada' } })
       fireEvent.change(priceInput, { target: { value: '1800,00' } })
       fireEvent.click(submitBtn)
 
       await waitFor(() => {
-        expect(addSpy).toHaveBeenCalledWith({ term: 'RTX 4060', maxPrice: 1800 })
+        expect(addSpy).toHaveBeenCalledWith({
+          term: 'RTX 4060',
+          excludedTerms: 'ti, usada',
+          maxPrice: 1800,
+        })
       })
     })
 

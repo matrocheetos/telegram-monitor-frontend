@@ -20,6 +20,7 @@ describe('Fase 9: Ntfy Cards (Copy Topic + SVG i) and NtfyInfoModal', () => {
 
   const mockDashboardData: DashboardResponse = {
     activeChannelsCount: 3,
+    ntfyBaseUrl: 'https://ntfy.example.com',
     userTopic: 'promo/user/mateus',
     userNormalizedTopic: 'promo-user-mateus',
     userPublicUrl: 'https://ntfy.example.com/promo-user-mateus',
@@ -74,16 +75,15 @@ describe('Fase 9: Ntfy Cards (Copy Topic + SVG i) and NtfyInfoModal', () => {
   }
 
   describe('Ntfy Channels Row on Dashboard (/dashboard)', () => {
-    it('renders both channel cards with topics and public URLs', async () => {
+    it('renders both channel cards with topics and server base URL', async () => {
       await renderDashboard()
 
       expect(await screen.findByText('promo/user/mateus')).toBeInTheDocument()
       expect(screen.getByText('promo/cupom')).toBeInTheDocument()
-      expect(screen.getByTitle('https://ntfy.example.com/promo-user-mateus')).toBeInTheDocument()
-      expect(screen.getByTitle('https://ntfy.example.com/promo-cupom')).toBeInTheDocument()
+      expect(screen.getAllByTitle('https://ntfy.example.com')).toHaveLength(2)
     })
 
-    it('renders Info button (SVG icon, no emoji), Copiar Tópico and Copiar URL on both cards', async () => {
+    it('renders Info button (SVG icon, no emoji), Copiar Tópico and Copiar URL do Servidor on both cards', async () => {
       await renderDashboard()
 
       await screen.findByText('promo/user/mateus')
@@ -104,12 +104,12 @@ describe('Fase 9: Ntfy Cards (Copy Topic + SVG i) and NtfyInfoModal', () => {
       const copyTopicButtons = screen.getAllByRole('button', { name: 'Copiar Tópico' })
       expect(copyTopicButtons).toHaveLength(2)
 
-      // Check "Copiar URL" buttons (one for product, one for coupons)
-      const copyUrlButtons = screen.getAllByRole('button', { name: 'Copiar URL' })
-      expect(copyUrlButtons).toHaveLength(2)
+      // Check "Copiar URL do Servidor" buttons (one for product, one for coupons)
+      const copyServerButtons = screen.getAllByRole('button', { name: 'Copiar URL do Servidor' })
+      expect(copyServerButtons).toHaveLength(2)
     })
 
-    it('copies normalized topic on Copiar Tópico click and shows confirmation feedback', async () => {
+    it('copies normalized topic and server URL separately on click with feedback', async () => {
       const writeTextMock = vi.fn().mockResolvedValue(undefined)
       Object.defineProperty(window, 'isSecureContext', { value: true, configurable: true })
       Object.defineProperty(navigator, 'clipboard', {
@@ -122,6 +122,9 @@ describe('Fase 9: Ntfy Cards (Copy Topic + SVG i) and NtfyInfoModal', () => {
 
       const [copyUserTopicBtn, copyCouponsTopicBtn] = screen.getAllByRole('button', {
         name: 'Copiar Tópico',
+      })
+      const [copyUserServerBtn] = screen.getAllByRole('button', {
+        name: 'Copiar URL do Servidor',
       })
 
       // Click user topic copy
@@ -136,9 +139,16 @@ describe('Fase 9: Ntfy Cards (Copy Topic + SVG i) and NtfyInfoModal', () => {
       await waitFor(() => {
         expect(writeTextMock).toHaveBeenCalledWith('promo-cupom')
       })
+
+      // Click server URL copy (copies base server URL only, not topic URL)
+      fireEvent.click(copyUserServerBtn)
+      await waitFor(() => {
+        expect(writeTextMock).toHaveBeenCalledWith('https://ntfy.example.com')
+        expect(screen.getByRole('button', { name: 'Servidor Copiado!' })).toBeInTheDocument()
+      })
     })
 
-    it('opens NtfyInfoModal in product variant when clicking Info button on User Card', async () => {
+    it('opens NtfyInfoModal in product variant with ntfy.sh warning, Option A and Option B instructions', async () => {
       await renderDashboard()
       await screen.findByText('promo/user/mateus')
 
@@ -172,8 +182,15 @@ describe('Fase 9: Ntfy Cards (Copy Topic + SVG i) and NtfyInfoModal', () => {
       expect(iosLink).toHaveAttribute('target', '_blank')
       expect(iosLink).toHaveAttribute('rel', 'noopener noreferrer')
 
-      // Cross-channel recommendation for coupons
-      expect(screen.getByText(/adicione também o canal público de cupons/i)).toBeInTheDocument()
+      // Custom server instructions (avoiding default ntfy.sh)
+      expect(screen.getByText(/por padrão o app usa ntfy\.sh/i)).toBeInTheDocument()
+      expect(screen.getByText(/Opção A \(Recomendada\)/i)).toBeInTheDocument()
+      expect(screen.getByText(/Default server/i)).toBeInTheDocument()
+      expect(screen.getByText(/Opção B — Informar o servidor manualmente/i)).toBeInTheDocument()
+      expect(screen.getByText(/Use another server/i)).toBeInTheDocument()
+      expect(screen.getByText(/SERVIDOR: https:\/\/ntfy\.example\.com/i)).toBeInTheDocument()
+      expect(screen.getByText(/TÓPICO: promo-user-mateus/i)).toBeInTheDocument()
+      expect(screen.getAllByRole('button', { name: 'Copiar URL do Servidor' }).length).toBeGreaterThanOrEqual(2)
 
       // Close modal using "Entendi" button
       fireEvent.click(screen.getByRole('button', { name: 'Entendi' }))
@@ -199,8 +216,8 @@ describe('Fase 9: Ntfy Cards (Copy Topic + SVG i) and NtfyInfoModal', () => {
         screen.getByRole('heading', { name: 'Como receber alertas de cupons no ntfy' }),
       ).toBeInTheDocument()
 
-      // Cross-channel recommendation for user products
-      expect(screen.getByText(/adicione também o seu canal público de produtos/i)).toBeInTheDocument()
+      // Cross-channel instruction for user products
+      expect(screen.getByText(/repita para 'promo-user-mateus'/i)).toBeInTheDocument()
 
       // Close modal using Close (X) button
       fireEvent.click(screen.getByRole('button', { name: 'Fechar' }))
@@ -257,6 +274,9 @@ describe('Fase 9: Ntfy Cards (Copy Topic + SVG i) and NtfyInfoModal', () => {
       ).toBeInTheDocument()
       expect(screen.getByRole('button', { name: 'Got it' })).toBeInTheDocument()
       expect(screen.getByRole('button', { name: 'Copy Topic' })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: 'Copy Server URL' })).toBeInTheDocument()
+      expect(screen.getByText(/Settings → Default server/i)).toBeInTheDocument()
+      expect(screen.getByText(/Use another server/i)).toBeInTheDocument()
     })
 
     it('triggers onClose when clicking the modal backdrop', () => {

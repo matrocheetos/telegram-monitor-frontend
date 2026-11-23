@@ -8,6 +8,7 @@ interface CopyButtonProps {
   label?: string
   copiedLabel?: string
   variant?: CopyButtonVariant
+  compact?: boolean
   className?: string
 }
 
@@ -16,6 +17,7 @@ export function CopyButton({
   label,
   copiedLabel,
   variant = 'blue',
+  compact = false,
   className = '',
 }: CopyButtonProps) {
   const { t } = useI18n()
@@ -47,8 +49,9 @@ export function CopyButton({
     }
   }
 
-  const baseStyles =
-    'inline-flex items-center justify-center font-semibold text-[13px] rounded-lg transition-colors cursor-pointer select-none px-3.5 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1'
+  const baseStyles = compact
+    ? 'inline-flex items-center justify-center font-semibold text-xs rounded-lg transition-colors cursor-pointer select-none px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1'
+    : 'inline-flex items-center justify-center font-semibold text-[13px] rounded-lg transition-colors cursor-pointer select-none px-3.5 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1'
 
   const variantStyles: Record<CopyButtonVariant, string> = {
     blue: copied

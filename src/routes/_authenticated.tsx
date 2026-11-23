@@ -127,17 +127,17 @@ function AuthenticatedLayout() {
       {/* Mobile Navigation Bar (< 1024px, 44px height) */}
       <nav
         aria-label="Mobile quick navigation"
-        className="lg:hidden h-11 bg-[#1e293b] border-b border-slate-700/80 px-3 flex items-center justify-between gap-2 overflow-x-auto sticky top-14 z-20 flex-shrink-0"
+        className="lg:hidden h-11 bg-[#1e293b] border-b border-slate-700/80 px-3 flex items-center gap-2 sticky top-14 z-20 flex-shrink-0"
       >
-        <div className="flex items-center gap-1.5 min-w-0">
+        <div className="flex-1 min-w-0 flex items-center gap-1.5 overflow-x-auto overscroll-x-contain no-scrollbar py-1">
           {mobilePills.map((pill) => (
             <Link
               key={pill.to}
               to={pill.to}
-              className="text-[11px] font-medium py-1.5 px-2.5 rounded-md text-slate-300 hover:text-white bg-slate-900/60 transition-colors whitespace-nowrap flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              className="text-[11px] font-medium py-1.5 px-2.5 rounded-md text-slate-300 hover:text-white bg-slate-900/60 transition-colors whitespace-nowrap flex-shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               activeProps={{
                 className:
-                  'text-[11px] font-bold py-1.5 px-2.5 rounded-md text-white bg-blue-600 transition-colors whitespace-nowrap flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
+                  'text-[11px] font-bold py-1.5 px-2.5 rounded-md text-white bg-blue-600 transition-colors whitespace-nowrap flex-shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white',
               }}
             >
               {pill.label}
@@ -145,13 +145,30 @@ function AuthenticatedLayout() {
           ))}
         </div>
 
+        <div aria-hidden="true" className="h-[22px] w-px bg-slate-600/70 flex-shrink-0" />
+
         <button
           type="button"
           onClick={handleQuickLogout}
           disabled={logoutMutation.isPending}
-          className="bg-[#334155] hover:bg-red-700 active:bg-red-800 text-white text-[11px] font-bold px-3 py-1.5 rounded-md flex-shrink-0 transition-colors cursor-pointer disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          aria-label={t.common.logout}
+          title={t.common.logout}
+          className="w-9 h-8 bg-[#334155] hover:bg-red-700 active:bg-red-800 text-slate-50 rounded-md flex items-center justify-center flex-shrink-0 transition-colors cursor-pointer touch-manipulation disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
-          {t.common.logout}
+          <svg
+            className="w-4 h-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
         </button>
       </nav>
 

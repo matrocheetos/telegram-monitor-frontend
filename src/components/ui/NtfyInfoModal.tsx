@@ -39,8 +39,6 @@ export function NtfyInfoModal({
       ? publicUrl.substring(0, publicUrl.lastIndexOf('/'))
       : 'https://ntfy.example.com')
 
-  const effectivePublicUrl = publicUrl || `${effectiveBaseUrl}/${effectiveTopic}`
-
   useEffect(() => {
     if (!isOpen) return
 
@@ -89,7 +87,7 @@ export function NtfyInfoModal({
 
             <div className="flex flex-col min-w-0">
               <span
-                className={`text-[11px] font-bold tracking-wider uppercase truncate ${
+                className={`text-[11px] font-bold tracking-wider uppercase leading-snug ${
                   isProduct ? 'text-blue-700' : 'text-emerald-700'
                 }`}
               >
@@ -97,7 +95,7 @@ export function NtfyInfoModal({
               </span>
               <h2
                 id="ntfy-modal-title"
-                className="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-snug truncate"
+                className="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-snug"
               >
                 {isProduct ? t.ntfyModal.titleProduct : t.ntfyModal.titleCoupon}
               </h2>
@@ -108,8 +106,8 @@ export function NtfyInfoModal({
           <button
             type="button"
             onClick={onClose}
-            className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1"
-            aria-label="Fechar"
+            className="w-10 h-10 rounded-lg flex items-center justify-center text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer flex-shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1"
+            aria-label={t.common.close}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <line x1="18" y1="6" x2="6" y2="18" />
@@ -186,59 +184,72 @@ export function NtfyInfoModal({
         </div>
 
         {/* Step 2: Subscribe Instructions */}
-        <div className="bg-white border border-slate-200 rounded-xl p-3.5 sm:p-4 flex flex-col gap-2 text-xs sm:text-[13px] text-slate-700">
-          <span className="text-[11px] font-bold text-slate-600 tracking-wider uppercase select-none mb-0.5">
+        <div className="bg-white border border-slate-200 rounded-xl p-3.5 sm:p-4 flex flex-col gap-2.5 text-xs text-slate-700">
+          <span className="text-[11px] font-bold text-slate-600 tracking-wider uppercase select-none">
             {t.ntfyModal.step2Title}
           </span>
 
-          <p>{t.ntfyModal.step2Item1}</p>
-          <p className="font-semibold text-slate-900">
-            {isProduct
-              ? t.ntfyModal.step2Item2Product(effectiveTopic)
-              : t.ntfyModal.step2Item2Coupon(effectiveTopic)}
-          </p>
-          <p>{t.ntfyModal.step2Item3(effectiveBaseUrl)}</p>
+          <div className="bg-[#fef3c7] border border-[#fcd34d] rounded-lg px-3 py-2 text-xs font-semibold text-[#92400e] leading-relaxed">
+            {t.ntfyModal.serverWarning}
+          </div>
 
-          <div
-            className={`p-2.5 rounded-lg border mt-1 font-semibold text-xs leading-relaxed ${
-              isProduct
-                ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
-                : 'bg-blue-50 border-blue-200 text-blue-800'
-            }`}
-          >
-            {isProduct
-              ? t.ntfyModal.step2Item4Product(effectiveOtherTopic)
-              : t.ntfyModal.step2Item4Coupon(effectiveOtherTopic)}
+          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 flex flex-col gap-1">
+            <span className="font-bold text-slate-900">{t.ntfyModal.optionATitle}</span>
+            <p className="text-slate-700 leading-relaxed">{t.ntfyModal.optionAStep1}</p>
+            <p className="text-slate-700 leading-relaxed">
+              {t.ntfyModal.optionAStep2(effectiveTopic, effectiveOtherTopic)}
+            </p>
+          </div>
+
+          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 flex flex-col gap-1">
+            <span className="font-bold text-slate-900">{t.ntfyModal.optionBTitle}</span>
+            <p className="text-slate-700 leading-relaxed">
+              {t.ntfyModal.optionBDesc(effectiveTopic, effectiveOtherTopic)}
+            </p>
           </div>
         </div>
 
-        {/* Quick Topic Copy Box */}
-        <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div className="flex flex-col min-w-0">
-            <span className="text-xs sm:text-sm font-bold text-slate-900 font-mono truncate">
-              {t.ntfyModal.topicLabel(effectiveTopic)}
+        {/* Quick Topic & Server Copy Box */}
+        <div
+          className={`rounded-xl border p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 ${
+            isProduct
+              ? 'bg-[#eff6ff] border-[#93c5fd]'
+              : 'bg-[#f0fdf4] border-[#86efac]'
+          }`}
+        >
+          <div className="flex flex-col min-w-0 gap-0.5">
+            <span
+              className="text-xs sm:text-[13px] font-bold text-slate-900 font-mono truncate"
+              title={effectiveBaseUrl}
+              translate="no"
+            >
+              {t.ntfyModal.serverLabel(effectiveBaseUrl)}
             </span>
             <span
-              className="text-[11px] sm:text-xs text-slate-500 font-mono truncate mt-0.5"
-              title={effectivePublicUrl}
+              className="text-xs sm:text-[13px] font-bold text-slate-900 font-mono truncate"
+              title={effectiveTopic}
+              translate="no"
             >
-              {effectivePublicUrl}
+              {t.ntfyModal.topicLabel(effectiveTopic)}
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 flex-shrink-0">
+          <div className="flex flex-wrap sm:flex-nowrap sm:items-center gap-2 flex-shrink-0">
             <CopyButton
               text={effectiveTopic}
               label={t.common.copyTopic}
               copiedLabel={t.common.topicCopied}
               variant={isProduct ? 'blue-outline' : 'green-outline'}
-              className="h-10 text-xs px-3 justify-center w-full sm:w-auto"
+              compact
+              className="h-10 flex-1 min-w-fit sm:flex-initial justify-center touch-manipulation whitespace-nowrap"
             />
             <CopyButton
-              text={effectivePublicUrl}
-              label={t.common.copyUrl}
+              text={effectiveBaseUrl}
+              label={t.common.copyServerUrl}
+              copiedLabel={t.common.serverUrlCopied}
               variant={isProduct ? 'blue' : 'green'}
-              className="h-10 text-xs px-3 justify-center w-full sm:w-auto"
+              compact
+              className="h-10 flex-1 min-w-fit sm:flex-initial justify-center touch-manipulation whitespace-nowrap"
             />
           </div>
         </div>

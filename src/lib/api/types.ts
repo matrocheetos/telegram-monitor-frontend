@@ -33,6 +33,7 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   authenticated: boolean
+  csrfToken?: string
   user: UserPayload
   telegram: TelegramSessionPayload | null
 }
@@ -49,11 +50,13 @@ export interface UserInterestDTO {
 
 export interface CreateInterestRequest {
   term: string
+  excludedTerms?: string
   maxPrice: number | null
 }
 
 export interface DashboardResponse {
   activeChannelsCount: number
+  ntfyBaseUrl?: string
   userTopic: string
   userNormalizedTopic: string
   userPublicUrl: string

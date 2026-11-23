@@ -5,7 +5,6 @@ import {
   type SetupRequest,
   type LoginRequest,
   type LoginResponse,
-  type UserPayload,
   type DashboardResponse,
   type CreateInterestRequest,
   type UserInterestDTO,
@@ -30,16 +29,14 @@ export function setCsrfToken(token: string | null): void {
 }
 
 export function getCsrfToken(): string | null {
-  if (inMemoryCsrfToken) return inMemoryCsrfToken
-
   if (typeof document !== 'undefined') {
     const match = document.cookie.match(/(?:^|;\s*)csrf_token=([^;]*)/)
-    if (match) {
+    if (match && match[1]) {
       return decodeURIComponent(match[1])
     }
   }
 
-  return null
+  return inMemoryCsrfToken
 }
 
 function getStoredLocale(): string {
@@ -142,24 +139,36 @@ export const apiClient = {
     return session
   },
 
-  async setup(data: SetupRequest): Promise<UserPayload> {
-    return request<UserPayload>('/api/v1/setup', {
+  async setup(data: SetupRequest): Promise<SessionResponse> {
+    const session = await request<SessionResponse>('/api/v1/setup', {
       method: 'POST',
       body: JSON.stringify(data),
     })
+    if (session.csrfToken) {
+      setCsrfToken(session.csrfToken)
+    }
+    return session
   },
 
   async login(data: LoginRequest): Promise<LoginResponse> {
-    return request<LoginResponse>('/api/v1/auth/login', {
+    const res = await request<LoginResponse>('/api/v1/auth/login', {
       method: 'POST',
       body: JSON.stringify(data),
     })
+    if (res.csrfToken) {
+      setCsrfToken(res.csrfToken)
+    }
+    return res
   },
 
   async logout(): Promise<void> {
-    return request<void>('/api/v1/auth/logout', {
-      method: 'POST',
-    })
+    try {
+      return await request<void>('/api/v1/auth/logout', {
+        method: 'POST',
+      })
+    } finally {
+      setCsrfToken(null)
+    }
   },
 
   async getDashboard(signal?: AbortSignal): Promise<DashboardResponse> {

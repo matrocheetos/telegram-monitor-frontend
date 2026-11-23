@@ -145,4 +145,112 @@ describe('ApiClient', () => {
     expect(url).toBe('/api/v1/offers?tab=products&q=switch')
     expect(init.headers.get('Accept-Language')).toBe('en-US')
   })
+
+  it('prefers rotated csrf_token cookie over stale inMemoryCsrfToken', async () => {
+    setCsrfToken('stale-pre-login-token')
+    document.cookie = 'csrf_token=fresh-rotated-cookie-token; path=/;'
+
+    expect(getCsrfToken()).toBe('fresh-rotated-cookie-token')
+
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ id: 1, rawTerm: 'switch 2' }), {
+        status: 201,
+        headers: { 'content-type': 'application/json' },
+      }),
+    )
+    vi.stubGlobal('fetch', fetchMock)
+
+    await apiClient.addInterest({ term: 'switch 2', excludedTerms: 'capa', maxPrice: null })
+
+    const [, init] = fetchMock.mock.calls[0]
+    expect(init.headers.get('X-CSRF-Token')).toBe('fresh-rotated-cookie-token')
+    expect(JSON.parse(init.body)).toEqual({
+      term: 'switch 2',
+      excludedTerms: 'capa',
+      maxPrice: null,
+    })
+  })
+
+  it('updates CSRF token immediately after login without page reload and clears on logout', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            needsInitialSetup: false,
+            authenticated: false,
+            csrfToken: 'pre-login-csrf',
+            user: null,
+            telegram: null,
+          }),
+          { status: 200, headers: { 'content-type': 'application/json' } },
+        ),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            authenticated: true,
+            csrfToken: 'post-login-rotated-csrf',
+            user: { id: 1, username: 'mateus', role: 'user', ntfyTopic: 'promo/user/mateus' },
+            telegram: null,
+          }),
+          { status: 200, headers: { 'content-type': 'application/json' } },
+        ),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            id: 99,
+            rawTerm: 'iphone 16e',
+            positiveTokens: ['iphone', '16e'],
+            negativeTokens: ['capa'],
+            maxPrice: 4000,
+            active: true,
+            createdAt: '2026-11-23T00:00:00Z',
+          }),
+          { status: 201, headers: { 'content-type': 'application/json' } },
+        ),
+      )
+      .mockResolvedValueOnce(new Response(null, { status: 204 }))
+
+    vi.stubGlobal('fetch', fetchMock)
+
+    await apiClient.getSession()
+    expect(getCsrfToken()).toBe('pre-login-csrf')
+
+    await apiClient.login({ username: 'mateus', password: 'secret' })
+    expect(getCsrfToken()).toBe('post-login-rotated-csrf')
+
+    await apiClient.addInterest({ term: 'iphone 16e', excludedTerms: 'capa', maxPrice: 4000 })
+    const [, addInit] = fetchMock.mock.calls[2]
+    expect(addInit.headers.get('X-CSRF-Token')).toBe('post-login-rotated-csrf')
+
+    await apiClient.logout()
+    expect(getCsrfToken()).toBeNull()
+  })
+
+  it('updates CSRF token immediately after initial setup', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          needsInitialSetup: false,
+          authenticated: true,
+          csrfToken: 'post-setup-rotated-csrf',
+          user: { id: 1, username: 'admin', role: 'admin', ntfyTopic: 'promo/user/admin' },
+          telegram: { connected: false, phoneMasked: '' },
+        }),
+        { status: 201, headers: { 'content-type': 'application/json' } },
+      ),
+    )
+    vi.stubGlobal('fetch', fetchMock)
+
+    const session = await apiClient.setup({
+      username: 'admin',
+      password: 'password123',
+      passwordConfirm: 'password123',
+    })
+
+    expect(session.csrfToken).toBe('post-setup-rotated-csrf')
+    expect(getCsrfToken()).toBe('post-setup-rotated-csrf')
+  })
 })

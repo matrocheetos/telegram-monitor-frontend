@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import type { FormEvent } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
@@ -26,9 +26,13 @@ function DashboardPage() {
   const deleteInterestMutation = useDeleteInterestMutation()
 
   const [term, setTerm] = useState('')
+  const [excludedTerms, setExcludedTerms] = useState('')
   const [maxPriceInput, setMaxPriceInput] = useState('')
   const [formError, setFormError] = useState<string | null>(null)
   const [infoModalVariant, setInfoModalVariant] = useState<'product' | 'coupon' | null>(null)
+
+  const termInputRef = useRef<HTMLInputElement>(null)
+  const maxPriceInputRef = useRef<HTMLInputElement>(null)
 
   const username = data?.userTopic ? data.userTopic.split('/').pop() || 'user' : 'user'
   const userNormalizedTopic =
@@ -39,11 +43,12 @@ function DashboardPage() {
 
   const userPublicUrl = data?.userPublicUrl || ''
   const couponsPublicUrl = data?.couponsPublicUrl || ''
-  const ntfyBaseUrl = userPublicUrl
+  const fallbackBaseUrl = userPublicUrl
     ? userPublicUrl.substring(0, userPublicUrl.lastIndexOf('/'))
     : couponsPublicUrl
       ? couponsPublicUrl.substring(0, couponsPublicUrl.lastIndexOf('/'))
-      : undefined
+      : ''
+  const ntfyServerUrl = data?.ntfyBaseUrl || fallbackBaseUrl
 
   const handleAddInterest = (e: FormEvent) => {
     e.preventDefault()
@@ -51,6 +56,7 @@ function DashboardPage() {
 
     const trimmedTerm = term.trim()
     if (!trimmedTerm) {
+      termInputRef.current?.focus()
       return
     }
 
@@ -60,16 +66,24 @@ function DashboardPage() {
       const val = parseFloat(normalizedPrice)
       if (isNaN(val) || val <= 0) {
         setFormError(t.apiErrors.unprocessable)
+        maxPriceInputRef.current?.focus()
         return
       }
       parsedMaxPrice = Math.round(val * 100) / 100
     }
 
+    const trimmedExclusions = excludedTerms.trim()
+
     addInterestMutation.mutate(
-      { term: trimmedTerm, maxPrice: parsedMaxPrice },
+      {
+        term: trimmedTerm,
+        ...(trimmedExclusions ? { excludedTerms: trimmedExclusions } : {}),
+        maxPrice: parsedMaxPrice,
+      },
       {
         onSuccess: () => {
           setTerm('')
+          setExcludedTerms('')
           setMaxPriceInput('')
         },
       },
@@ -117,19 +131,26 @@ function DashboardPage() {
       )}
 
       {/* Ntfy Channel Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
         {/* User Notifications Channel Card */}
-        <div className="bg-white border-2 border-blue-200 rounded-xl p-5 sm:p-6 shadow-xs flex flex-col justify-between gap-4">
+        <div className="bg-white border-2 border-blue-200 rounded-xl p-5 shadow-xs flex flex-col justify-between gap-3.5">
           <div className="flex items-start justify-between gap-3 min-w-0">
             <div className="flex flex-col min-w-0">
               <span className="text-[11px] font-bold text-blue-700 tracking-wider uppercase select-none">
                 {t.dashboard.notificationChannel}
               </span>
-              <span className="text-[20px] sm:text-[22px] font-bold text-slate-900 tracking-tight truncate mt-1">
+              <span
+                className="text-[20px] sm:text-[22px] font-bold text-slate-900 tracking-tight truncate mt-1"
+                translate="no"
+              >
                 {data?.userTopic || 'promo/user/…'}
               </span>
-              <span className="text-[12px] sm:text-[13px] text-slate-600 font-normal truncate mt-0.5" title={userPublicUrl}>
-                {userPublicUrl || 'https://…'}
+              <span
+                className="text-[12px] text-slate-600 font-normal truncate mt-0.5"
+                title={ntfyServerUrl}
+              >
+                {t.dashboard.serverLabel}{' '}
+                <span translate="no">{ntfyServerUrl || 'https://…'}</span>
               </span>
             </div>
 
@@ -137,7 +158,7 @@ function DashboardPage() {
             <button
               type="button"
               onClick={() => setInfoModalVariant('product')}
-              className="lg:hidden w-9 h-9 rounded-lg bg-[#eff6ff] hover:bg-blue-100 active:bg-blue-200 border border-[#93c5fd] text-[#1d4ed8] flex items-center justify-center transition-colors cursor-pointer flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+              className="lg:hidden w-9 h-9 rounded-lg bg-[#eff6ff] hover:bg-blue-100 active:bg-blue-200 border border-[#93c5fd] text-[#1d4ed8] flex items-center justify-center transition-colors cursor-pointer flex-shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
               aria-label={t.aria.ntfyInfoButton}
             >
               <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -148,12 +169,12 @@ function DashboardPage() {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 lg:flex lg:items-center gap-2 flex-shrink-0">
+          <div className="flex flex-wrap lg:flex-nowrap lg:items-center gap-2 lg:gap-2.5 flex-shrink-0">
             {/* Info Button for Desktop */}
             <button
               type="button"
               onClick={() => setInfoModalVariant('product')}
-              className="hidden lg:flex w-9 h-9 rounded-lg bg-[#eff6ff] hover:bg-blue-100 active:bg-blue-200 border border-[#93c5fd] text-[#1d4ed8] items-center justify-center transition-colors cursor-pointer flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+              className="hidden lg:flex w-9 h-9 rounded-lg bg-[#eff6ff] hover:bg-blue-100 active:bg-blue-200 border border-[#93c5fd] text-[#1d4ed8] items-center justify-center transition-colors cursor-pointer flex-shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
               aria-label={t.aria.ntfyInfoButton}
             >
               <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -168,29 +189,39 @@ function DashboardPage() {
               label={t.common.copyTopic}
               copiedLabel={t.common.topicCopied}
               variant="blue-outline"
-              className="h-11 sm:h-10 text-xs sm:text-[13px] px-3 sm:px-3.5 w-full lg:w-auto"
+              compact
+              className="h-11 sm:h-10 flex-1 min-w-fit lg:flex-initial touch-manipulation whitespace-nowrap"
             />
             <CopyButton
-              text={userPublicUrl}
-              label={t.common.copyUrl}
+              text={ntfyServerUrl}
+              label={t.common.copyServerUrl}
+              copiedLabel={t.common.serverUrlCopied}
               variant="blue"
-              className="h-11 sm:h-10 text-xs sm:text-[13px] px-3 sm:px-3.5 w-full lg:w-auto"
+              compact
+              className="h-11 sm:h-10 flex-1 min-w-fit lg:flex-initial touch-manipulation whitespace-nowrap"
             />
           </div>
         </div>
 
         {/* Global Coupons Channel Card */}
-        <div className="bg-white border-2 border-emerald-300 rounded-xl p-5 sm:p-6 shadow-xs flex flex-col justify-between gap-4">
+        <div className="bg-white border-2 border-emerald-300 rounded-xl p-5 shadow-xs flex flex-col justify-between gap-3.5">
           <div className="flex items-start justify-between gap-3 min-w-0">
             <div className="flex flex-col min-w-0">
               <span className="text-[11px] font-bold text-emerald-700 tracking-wider uppercase select-none">
                 {t.dashboard.couponsChannel}
               </span>
-              <span className="text-[20px] sm:text-[22px] font-bold text-slate-900 tracking-tight truncate mt-1">
+              <span
+                className="text-[20px] sm:text-[22px] font-bold text-slate-900 tracking-tight truncate mt-1"
+                translate="no"
+              >
                 {data?.couponsTopic || 'promo/cupom'}
               </span>
-              <span className="text-[12px] sm:text-[13px] text-slate-600 font-normal truncate mt-0.5" title={couponsPublicUrl}>
-                {couponsPublicUrl || 'https://…'}
+              <span
+                className="text-[12px] text-slate-600 font-normal truncate mt-0.5"
+                title={ntfyServerUrl}
+              >
+                {t.dashboard.serverLabel}{' '}
+                <span translate="no">{ntfyServerUrl || 'https://…'}</span>
               </span>
             </div>
 
@@ -198,7 +229,7 @@ function DashboardPage() {
             <button
               type="button"
               onClick={() => setInfoModalVariant('coupon')}
-              className="lg:hidden w-9 h-9 rounded-lg bg-[#f0fdf4] hover:bg-emerald-100 active:bg-emerald-200 border border-[#86efac] text-[#15803d] flex items-center justify-center transition-colors cursor-pointer flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
+              className="lg:hidden w-9 h-9 rounded-lg bg-[#f0fdf4] hover:bg-emerald-100 active:bg-emerald-200 border border-[#86efac] text-[#15803d] flex items-center justify-center transition-colors cursor-pointer flex-shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
               aria-label={t.aria.ntfyInfoButton}
             >
               <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -209,12 +240,12 @@ function DashboardPage() {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 lg:flex lg:items-center gap-2 flex-shrink-0">
+          <div className="flex flex-wrap lg:flex-nowrap lg:items-center gap-2 lg:gap-2.5 flex-shrink-0">
             {/* Info Button for Desktop */}
             <button
               type="button"
               onClick={() => setInfoModalVariant('coupon')}
-              className="hidden lg:flex w-9 h-9 rounded-lg bg-[#f0fdf4] hover:bg-emerald-100 active:bg-emerald-200 border border-[#86efac] text-[#15803d] items-center justify-center transition-colors cursor-pointer flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
+              className="hidden lg:flex w-9 h-9 rounded-lg bg-[#f0fdf4] hover:bg-emerald-100 active:bg-emerald-200 border border-[#86efac] text-[#15803d] items-center justify-center transition-colors cursor-pointer flex-shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
               aria-label={t.aria.ntfyInfoButton}
             >
               <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -229,67 +260,120 @@ function DashboardPage() {
               label={t.common.copyTopic}
               copiedLabel={t.common.topicCopied}
               variant="green-outline"
-              className="h-11 sm:h-10 text-xs sm:text-[13px] px-3 sm:px-3.5 w-full lg:w-auto"
+              compact
+              className="h-11 sm:h-10 flex-1 min-w-fit lg:flex-initial touch-manipulation whitespace-nowrap"
             />
             <CopyButton
-              text={couponsPublicUrl}
-              label={t.common.copyUrl}
+              text={ntfyServerUrl}
+              label={t.common.copyServerUrl}
+              copiedLabel={t.common.serverUrlCopied}
               variant="green"
-              className="h-11 sm:h-10 text-xs sm:text-[13px] px-3 sm:px-3.5 w-full lg:w-auto"
+              compact
+              className="h-11 sm:h-10 flex-1 min-w-fit lg:flex-initial touch-manipulation whitespace-nowrap"
             />
           </div>
         </div>
       </div>
 
       {/* Add Interest Card */}
-      <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
-        <h2 className="text-base font-bold text-slate-900 mb-4 select-none">
+      <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-6 shadow-xs">
+        <h2 className="text-[15px] sm:text-base font-bold text-slate-900 mb-3.5 sm:mb-4 select-none">
           {t.dashboard.addInterestTitle}
         </h2>
 
         {formError && (
-          <div role="alert" className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 font-semibold">
+          <div
+            role="alert"
+            aria-live="polite"
+            className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 font-semibold"
+          >
             {formError}
           </div>
         )}
 
         {addInterestMutation.error && (
-          <div role="alert" className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 font-semibold">
+          <div
+            role="alert"
+            aria-live="polite"
+            className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600 font-semibold"
+          >
             {addInterestMutation.error instanceof ApiError
               ? addInterestMutation.error.message
               : t.apiErrors.genericError}
           </div>
         )}
 
-        <form onSubmit={handleAddInterest} className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-          <input
-            id="interest-term"
-            name="term"
-            type="text"
-            value={term}
-            onChange={(e) => setTerm(e.target.value)}
-            placeholder={t.dashboard.termPlaceholder}
-            required
-            autoComplete="off"
-            spellCheck={false}
-            className="flex-1 w-full h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-base sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors"
-          />
-          <input
-            id="interest-max-price"
-            name="maxPrice"
-            type="text"
-            value={maxPriceInput}
-            onChange={(e) => setMaxPriceInput(e.target.value)}
-            placeholder={t.dashboard.maxPricePlaceholder}
-            inputMode="decimal"
-            autoComplete="off"
-            spellCheck={false}
-            className="w-full sm:w-56 h-11 px-3.5 bg-slate-50 border border-slate-300 rounded-lg text-base sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 transition-colors tabular-nums"
-          />
+        <form
+          onSubmit={handleAddInterest}
+          className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_180px_auto] gap-3.5 items-end"
+        >
+          <div className="flex flex-col gap-1.5 min-w-0">
+            <label htmlFor="interest-term" className="text-xs font-semibold text-slate-700">
+              {t.dashboard.termFieldLabel}{' '}
+              <span className="text-red-600" aria-hidden="true">
+                *
+              </span>
+            </label>
+            <input
+              ref={termInputRef}
+              id="interest-term"
+              name="term"
+              type="text"
+              value={term}
+              onChange={(e) => setTerm(e.target.value)}
+              placeholder={t.dashboard.termPlaceholder}
+              required
+              autoComplete="off"
+              spellCheck={false}
+              className="w-full h-11 px-3 bg-slate-50 border border-slate-300 rounded-lg text-base sm:text-sm text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-blue-500 transition-colors"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5 min-w-0">
+            <label htmlFor="interest-exclusions" className="text-xs font-semibold text-slate-700">
+              {t.dashboard.exclusionsFieldLabel}
+            </label>
+            <input
+              id="interest-exclusions"
+              name="excludedTerms"
+              type="text"
+              value={excludedTerms}
+              onChange={(e) => setExcludedTerms(e.target.value)}
+              placeholder={t.dashboard.exclusionsPlaceholder}
+              autoComplete="off"
+              spellCheck={false}
+              className="w-full h-11 px-3 bg-slate-50 border border-slate-300 rounded-lg text-base sm:text-sm text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:border-blue-500 transition-colors"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5 min-w-0">
+            <label htmlFor="interest-max-price" className="text-xs font-semibold text-slate-700">
+              {t.dashboard.maxPriceFieldLabel}
+            </label>
+            <div className="w-full h-11 px-3 bg-slate-50 border border-slate-300 rounded-lg flex items-center gap-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-colors">
+              <span aria-hidden="true" className="text-sm font-semibold text-slate-500 select-none">
+                {t.dashboard.currencyPrefix}
+              </span>
+              <input
+                ref={maxPriceInputRef}
+                id="interest-max-price"
+                name="maxPrice"
+                type="text"
+                value={maxPriceInput}
+                onChange={(e) => setMaxPriceInput(e.target.value)}
+                placeholder={t.dashboard.maxPricePlaceholder}
+                inputMode="decimal"
+                autoComplete="off"
+                spellCheck={false}
+                className="w-full h-full bg-transparent text-base sm:text-sm text-slate-900 tabular-nums focus:outline-none"
+              />
+            </div>
+          </div>
+
           <button
             type="submit"
             disabled={addInterestMutation.isPending}
-            className="w-full sm:w-auto h-11 px-5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm rounded-lg transition-colors cursor-pointer disabled:opacity-50 whitespace-nowrap shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            className="w-full lg:w-auto h-11 px-5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm rounded-lg transition-colors cursor-pointer touch-manipulation disabled:opacity-50 whitespace-nowrap shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           >
             {addInterestMutation.isPending ? '…' : t.dashboard.addInterestButton}
           </button>
@@ -444,7 +528,7 @@ function DashboardPage() {
           username={username}
           topic={infoModalVariant === 'product' ? userNormalizedTopic : couponsNormalizedTopic}
           publicUrl={infoModalVariant === 'product' ? userPublicUrl : couponsPublicUrl}
-          ntfyBaseUrl={ntfyBaseUrl}
+          ntfyBaseUrl={ntfyServerUrl || undefined}
           otherTopic={infoModalVariant === 'product' ? couponsNormalizedTopic : userNormalizedTopic}
         />
       )}
